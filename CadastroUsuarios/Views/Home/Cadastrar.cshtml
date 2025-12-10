@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Cadastrar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form>
+    <h4>Cadastrar</h4>
+    <div class="mb-3">
+        <label class="form-label">Nome</label>
+        <input type="text" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Sobrenome</label>
+        <input type="text" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Nome Social</label>
+        <input type="text" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Data de nascimento</label>
+        <input type="date" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Senha</label>
+        <input type="password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
