@@ -3,28 +3,17 @@
 <head>
     <title>Cadastro de Usuários</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    @RenderSection("Estilos", false)
+    
 </head>
 <body>
-    <style>
-        .required::after {
-            content:' *';
-            color: red;
-        }
-    </style>
-    <script>
-        $(document).ready(function () {
-            $('input[required]').each(function () {
-
-                var $label = $(this).prev('label');
-                $label.addClass('required');
-            });
-        });
-    </script>
     <div class="container body-content">
         <h1>Cadastro de Usuários</h1>
+        <h4>@RenderSection("Subtitulo")</h4>
         @RenderBody()
-
     </div>
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    @RenderSection("Scripts", false)
 </body>
 </html>

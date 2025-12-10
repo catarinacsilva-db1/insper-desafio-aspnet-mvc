@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using CadastroUsuarios.Models;
+using System.Web.Mvc;
 
 namespace CadastroUsuarios.Controllers
 {
@@ -10,7 +11,9 @@ namespace CadastroUsuarios.Controllers
         }
         public ActionResult Cadastrar()
         {
-            return View();
+            var user = new UsuarioViewModel();
+
+            return View(user);
         }
     }
 }
