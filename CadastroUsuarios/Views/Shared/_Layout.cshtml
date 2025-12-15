@@ -9,11 +9,31 @@
 <body>
     <div class="container body-content">
         <h1>Cadastro de Usuários</h1>
+        @if (ViewBag.mensagemErro != null)
+        {
+
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @ViewBag.mensagemErro
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (TempData["mensagemSucesso"] != null)
+        {
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["mensagemSucesso"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <hr />
         <h4>@RenderSection("Subtitulo")</h4>
         @RenderBody()
     </div>
 
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
     @RenderSection("Scripts", false)
 </body>
 </html>
