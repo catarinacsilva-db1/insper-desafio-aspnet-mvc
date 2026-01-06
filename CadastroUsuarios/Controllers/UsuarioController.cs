@@ -13,7 +13,7 @@ namespace CadastroUsuarios.Controllers
 
             if (TempData["UsuariosNovos"] != null)
             {
-                var listaUsuariosNovos = (List<UsuarioViewModel>)TempData["UsuariosNovos"];
+                var listaUsuariosNovos = (List<UsuarioModel>)TempData["UsuariosNovos"];
                 listaUsuarios.AddRange(listaUsuariosNovos);
             }
 
@@ -24,7 +24,7 @@ namespace CadastroUsuarios.Controllers
 
         public ActionResult Cadastrar()
         {
-            var user = new UsuarioViewModel //instanciando o ViewModel
+            var user = new UsuarioModel //instanciando o ViewModel
             {
                 Ativo = true //valor padrão para o campo Ativo
             };
@@ -33,7 +33,7 @@ namespace CadastroUsuarios.Controllers
         }
 
         [HttpPost] //tipo de requisição da Action.
-        public ActionResult CadastrarPost(UsuarioViewModel model)
+        public ActionResult CadastrarPost(UsuarioModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -46,25 +46,25 @@ namespace CadastroUsuarios.Controllers
             return RedirectToAction("Listar");
         }
 
-        private List<UsuarioViewModel> RetornarUserCadastrados()
+        private List<UsuarioModel> RetornarUserCadastrados()
         {
-            return new List<UsuarioViewModel>
+            return new List<UsuarioModel>
             {
-                new UsuarioViewModel {Nome = "Ana", Sobrenome = "Silva", DataNascimento = new DateTime(1990, 1, 1) },
-                new UsuarioViewModel {Nome = "João", Sobrenome = "Souza", DataNascimento = new DateTime(1985, 5, 15) },
+                new UsuarioModel {Nome = "Ana", Sobrenome = "Silva", DataNascimento = new DateTime(1990, 1, 1) },
+                new UsuarioModel {Nome = "João", Sobrenome = "Souza", DataNascimento = new DateTime(1985, 5, 15) },
             };
         }
 
-        private List<UsuarioViewModel> RetornarNovosUsuarios(UsuarioViewModel model)
+        private List<UsuarioModel> RetornarNovosUsuarios(UsuarioModel model)
         {
             if (TempData["UsuariosNovos"] == null)
             {
-                return new List<UsuarioViewModel>
+                return new List<UsuarioModel>
                 {
                     model
                 };
             }
-            var lista = (List<UsuarioViewModel>)TempData["UsuariosNovos"];
+            var lista = (List<UsuarioModel>)TempData["UsuariosNovos"];
             lista.Add(model);
 
             return lista;

@@ -1,5 +1,5 @@
 ﻿@using CadastroUsuarios.Models @*importação do model*@
-@model UsuarioViewModel 
+@model UsuarioModel 
     
 
 @{
@@ -56,13 +56,11 @@
             </div>
             <div class="form-check form-check-inline">
                 @Html.RadioButtonFor(x => x.Ativo, true, new { @class = "form-check-input", @id = "rbAtivo" })
-
-                @*TODO: entender propriedades*@
-                @Html.Label("", "Ativo", new { @class = "form-check-label", @for = "rbAtivo" })
+                @Html.Label("rbAtivo", "Ativo", new { @class = "form-check-label", @for = "rbAtivo" })
             </div>
             <div class="form-check form-check-inline">
                 @Html.RadioButtonFor(x => x.Ativo, false, new { @class = "form-check-input", @id = "rbInativo" })
-                @Html.Label("Inativo", new { @class = "form-check-label", @for = "rbInativo" })
+                @Html.Label("rbInativo", "Inativo", new { @class = "form-check-label", @for = "rbInativo" })
             </div>
             @Html.ValidationMessageFor(x => x.Ativo, string.Empty, new { @class = "text-danger" })
         </div>
