@@ -15,10 +15,38 @@ namespace CadastroUsuarios.Controllers
     {
         private AppDbContext db = new AppDbContext();
 
-        // GET: UsuarioController2
-        public ActionResult Index()
+        public ActionResult Index(string filtro = "todos", string termoPesquisa = "")
         {
-            return View(db.Usuarios.ToList());
+            IQueryable<UsuarioModel> query = db.Usuarios; //entender IQueryble
+
+            if (filtro == "ativo")
+            {
+                query = query.Where(u => u.Ativo == true);
+            }
+            else if (filtro == "inativo")
+            {
+                query = query.Where(u => u.Ativo == false);
+            }
+
+            if (!string.IsNullOrEmpty(termoPesquisa))
+            {
+                termoPesquisa = termoPesquisa.Trim().ToLower();
+                query = query.Where(u =>
+                    u.Nome.ToLower().Contains(termoPesquisa) ||
+                    u.Sobrenome.ToLower().Contains(termoPesquisa) ||
+                    u.NomeSocial.ToLower().Contains(termoPesquisa) 
+                   // || u.Cpf.ToString().Contains(termoPesquisa)
+                );
+            }
+
+            // Converte para List para retornar à view
+            List<UsuarioModel> usuarios = query.ToList();
+
+            // Passa valores para a view (para manter seleções e termos)
+            ViewBag.FiltroAtual = filtro;
+            ViewBag.TermoPesquisa = termoPesquisa;
+
+            return View(usuarios);
         }
 
         // GET: UsuarioController2/Details/5
@@ -37,7 +65,7 @@ namespace CadastroUsuarios.Controllers
         }
 
         // GET: UsuarioController2/Create
-        public ActionResult Create()
+        public ActionResult Cadastrar()
         {
             return View();
         }
@@ -46,8 +74,8 @@ namespace CadastroUsuarios.Controllers
         // Para proteger-se contra ataques de excesso de postagem, ative as propriedades específicas às quais deseja se associar. 
         // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Senha")] UsuarioModel usuarioModel)
+        //[ValidateAntiForgeryToken]
+        public ActionResult Cadastrar([Bind(Include = "Id,Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Senha")] UsuarioModel usuarioModel)
         {
             if (ModelState.IsValid)
             {

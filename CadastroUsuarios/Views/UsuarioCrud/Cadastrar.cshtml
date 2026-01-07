@@ -18,7 +18,7 @@
     <script src="~/Scripts/Cadastro/Funcoes.js"></script>
 }
 
-@using (Html.BeginForm("CadastrarPost", "Usuario"))
+@using (Html.BeginForm("Cadastrar", "UsuarioCrud"))
 {
     <div class="row">
         <div class="col-md-6 ab-3">
@@ -65,7 +65,8 @@
             @Html.ValidationMessageFor(x => x.Ativo, string.Empty, new { @class = "text-danger" })
         </div>
     </div>
-
-    <button type="submit" class="btn btn-primary">Cadastrar</button>
-    <a href="@Url.Action("Listar", "Usuario")" class="btn btn-primary">Voltar</a>
+    <section class="m-3">
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+        <a href="@Url.Action("Index", "UsuarioCrud")" class="btn btn-primary">Voltar</a>
+    </section>
 }

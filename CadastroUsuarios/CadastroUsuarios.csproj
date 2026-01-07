@@ -146,7 +146,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\UsuarioController.cs" />
+    <Compile Include="Views\tray\UsuarioController.cs" />
     <Compile Include="Controllers\UsuarioCrudController.cs" />
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -210,14 +210,12 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Usuario\Listar.cshtml" />
-    <Content Include="Views\Usuario\Cadastrar.cshtml" />
-    <Content Include="Views\Usuario\_ListaObservacao.cshtml" />
-    <Content Include="Views\UsuarioCrud\Create.cshtml" />
-    <Content Include="Views\UsuarioCrud\Delete.cshtml" />
-    <Content Include="Views\UsuarioCrud\Details.cshtml" />
-    <Content Include="Views\UsuarioCrud\Edit.cshtml" />
     <Content Include="Views\UsuarioCrud\Index.cshtml" />
+    <Content Include="Views\UsuarioCrud\Cadastrar.cshtml" />
+    <Content Include="Views\tray\_ListaObservacao.cshtml" />
+    <Content Include="Views\UsuarioCrud\Delete.cshtml" />
+    <Content Include="Views\UsuarioCrud\Edit.cshtml" />
+    <Content Include="Views\tray\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
