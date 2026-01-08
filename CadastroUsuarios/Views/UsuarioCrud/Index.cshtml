@@ -63,10 +63,10 @@
                         <td>@user.NomeSocial</td>
                         <td>@user.DataNascimento.ToString("dd/MM/yyyy")</td>
                         <td class="col-2 text-center">
-                            <a href="@Url.Action("Edit", "UsuarioCrud", new { id = user.Id })" class="btn btn-light">
+                            <a href="@Url.Action("Edit", "UsuarioCrud", new { id = user.Id })" class="btn btn-default">
                                 <i class="bi bi-pencil"></i>
                             </a>
-                            <a href="@Url.Action("Delete", "UsuarioCrud", new { id = user.Id })" class="btn btn-light">
+                            <a href="@Url.Action("Deletar", "UsuarioCrud", new { id = user.Id })" class="btn btn-default">
                                 <i class="bi bi-trash"></i>
                             </a>
                         </td>

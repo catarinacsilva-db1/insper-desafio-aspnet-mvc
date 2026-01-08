@@ -27,28 +27,14 @@ namespace CadastroUsuarios.Controllers
             return View(usuarios);
         }
 
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            UsuarioModel usuarioModel = db.Usuarios.Find(id);
-            if (usuarioModel == null)
-            {
-                return HttpNotFound();
-            }
-            return View(usuarioModel);
-        }
-
         public ActionResult Cadastrar()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Cadastrar")]
         [ValidateAntiForgeryToken]
-        public ActionResult Cadastrar([Bind(Include = "Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Senha")] UsuarioModel usuarioModel)
+        public ActionResult CadastrarPost([Bind(Include = "Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Senha")] UsuarioModel usuarioModel)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +74,7 @@ namespace CadastroUsuarios.Controllers
             return View(usuarioModel);
         }
 
-        public ActionResult Delete(int? id)
+        public ActionResult Deletar(int? id)
         {
             if (id == null)
             {
@@ -102,7 +88,7 @@ namespace CadastroUsuarios.Controllers
             return View(usuarioModel);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Deletar")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

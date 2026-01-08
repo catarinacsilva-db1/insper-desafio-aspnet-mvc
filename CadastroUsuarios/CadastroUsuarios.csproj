@@ -213,7 +213,7 @@
     <Content Include="Views\UsuarioCrud\Index.cshtml" />
     <Content Include="Views\UsuarioCrud\Cadastrar.cshtml" />
     <Content Include="Views\tray\_ListaObservacao.cshtml" />
-    <Content Include="Views\UsuarioCrud\Delete.cshtml" />
+    <Content Include="Views\UsuarioCrud\Deletar.cshtml" />
     <Content Include="Views\UsuarioCrud\Edit.cshtml" />
     <Content Include="Views\tray\Index.cshtml" />
   </ItemGroup>

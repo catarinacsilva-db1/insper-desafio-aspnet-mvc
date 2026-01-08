@@ -21,12 +21,15 @@ namespace CadastroUsuarios.Models
 
         [Required]
         [StringLength(100)]
-        [Display(Name = "Sobrenome")]
         public string Sobrenome { get; set; }
 
         [StringLength(100)]
         [Display(Name = "Nome Social")]
         public string NomeSocial { get; set; }
+
+        //[Required]
+        //[StringLength(11, MinimumLength = 11)]
+        //public string Cpf { get; set; }
 
         [Display(Name = "Data de nascimento")]
         [Column(TypeName = "datetime2")]
