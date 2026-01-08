@@ -1,6 +1,6 @@
 ﻿@using CadastroUsuarios.Models @*importação do model*@
-@model UsuarioModel 
-    
+@model UsuarioModel
+
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -20,6 +20,7 @@
 
 @using (Html.BeginForm("Cadastrar", "UsuarioCrud"))
 {
+    @Html.AntiForgeryToken()
     <div class="row">
         <div class="col-md-6 ab-3">
             @Html.LabelFor(x => x.Nome, new { @class = "form-label" })

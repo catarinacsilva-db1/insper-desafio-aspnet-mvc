@@ -17,39 +17,16 @@ namespace CadastroUsuarios.Controllers
 
         public ActionResult Index(string filtro = "todos", string termoPesquisa = "")
         {
-            IQueryable<UsuarioModel> query = db.Usuarios; //entender IQueryble
+            var query = PesquisaUsuario(filtro, termoPesquisa);
 
-            if (filtro == "ativo")
-            {
-                query = query.Where(u => u.Ativo == true);
-            }
-            else if (filtro == "inativo")
-            {
-                query = query.Where(u => u.Ativo == false);
-            }
-
-            if (!string.IsNullOrEmpty(termoPesquisa))
-            {
-                termoPesquisa = termoPesquisa.Trim().ToLower();
-                query = query.Where(u =>
-                    u.Nome.ToLower().Contains(termoPesquisa) ||
-                    u.Sobrenome.ToLower().Contains(termoPesquisa) ||
-                    u.NomeSocial.ToLower().Contains(termoPesquisa) 
-                   // || u.Cpf.ToString().Contains(termoPesquisa)
-                );
-            }
-
-            // Converte para List para retornar à view
             List<UsuarioModel> usuarios = query.ToList();
 
-            // Passa valores para a view (para manter seleções e termos)
             ViewBag.FiltroAtual = filtro;
             ViewBag.TermoPesquisa = termoPesquisa;
 
             return View(usuarios);
         }
 
-        // GET: UsuarioController2/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -64,18 +41,14 @@ namespace CadastroUsuarios.Controllers
             return View(usuarioModel);
         }
 
-        // GET: UsuarioController2/Create
         public ActionResult Cadastrar()
         {
             return View();
         }
 
-        // POST: UsuarioController2/Create
-        // Para proteger-se contra ataques de excesso de postagem, ative as propriedades específicas às quais deseja se associar. 
-        // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public ActionResult Cadastrar([Bind(Include = "Id,Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Senha")] UsuarioModel usuarioModel)
+        [ValidateAntiForgeryToken]
+        public ActionResult Cadastrar([Bind(Include = "Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Senha")] UsuarioModel usuarioModel)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +60,6 @@ namespace CadastroUsuarios.Controllers
             return View(usuarioModel);
         }
 
-        // GET: UsuarioController2/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -102,9 +74,7 @@ namespace CadastroUsuarios.Controllers
             return View(usuarioModel);
         }
 
-        // POST: UsuarioController2/Edit/5
-        // Para proteger-se contra ataques de excesso de postagem, ative as propriedades específicas às quais deseja se associar. 
-        // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Senha")] UsuarioModel usuarioModel)
@@ -118,7 +88,6 @@ namespace CadastroUsuarios.Controllers
             return View(usuarioModel);
         }
 
-        // GET: UsuarioController2/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -133,7 +102,6 @@ namespace CadastroUsuarios.Controllers
             return View(usuarioModel);
         }
 
-        // POST: UsuarioController2/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -152,5 +120,37 @@ namespace CadastroUsuarios.Controllers
             }
             base.Dispose(disposing);
         }
+
+        private IQueryable<UsuarioModel> PesquisaUsuario(string filtro, string termoPesquisa)
+        {
+            IQueryable<UsuarioModel> query = db.Usuarios;
+
+            if (filtro == "ativo")
+            {
+                query = query.Where(u => u.Ativo == true);
+            }
+            else if (filtro == "inativo")
+            {
+                query = query.Where(u => u.Ativo == false);
+            }
+
+            if (!string.IsNullOrEmpty(termoPesquisa))
+            {
+                termoPesquisa = termoPesquisa.Trim().ToLower();
+                query = query.Where(u =>
+                    u.Nome.ToLower().Contains(termoPesquisa) ||
+                    u.Sobrenome.ToLower().Contains(termoPesquisa) ||
+                    u.NomeSocial.ToLower().Contains(termoPesquisa)
+                );
+            }
+
+            return query;
+        }
+        private bool ValidaUsuario(int id)
+        {
+            return 1 == 1;
+        }
+
+
     }
 }

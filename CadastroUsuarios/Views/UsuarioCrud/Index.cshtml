@@ -42,6 +42,7 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
+                    <th scope="col">Status</th>
                     <th scope="col">Nome</th>
                     <th scope="col">Sobrenome</th>
                     <th scope="col">Nome Social</th>
@@ -53,13 +54,21 @@
                 @foreach (var user in Model)
                 {
                     <tr>
+                        <td class="text-center">
+                            <i class="@(user.Ativo ? "bi bi-check-circle-fill text-success" : "bi bi-x-circle-fill text-secondary")"
+                               title="@(user.Ativo ? "Ativo" : "Inativo")"></i>
+                        </td>
                         <td>@user.Nome</td>
                         <td>@user.Sobrenome</td>
                         <td>@user.NomeSocial</td>
                         <td>@user.DataNascimento.ToString("dd/MM/yyyy")</td>
-                        <td class="col-sm">
-                            @Html.ActionLink("Edit", "Edit", new { id = user.Id })
-                            @Html.ActionLink("Delete", "Delete", new { id = user.Id })
+                        <td class="col-2 text-center">
+                            <a href="@Url.Action("Edit", "UsuarioCrud", new { id = user.Id })" class="btn btn-light">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="@Url.Action("Delete", "UsuarioCrud", new { id = user.Id })" class="btn btn-light">
+                                <i class="bi bi-trash"></i>
+                            </a>
                         </td>
                     </tr>
                 }
