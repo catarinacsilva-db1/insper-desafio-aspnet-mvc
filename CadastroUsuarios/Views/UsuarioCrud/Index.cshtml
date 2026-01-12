@@ -47,6 +47,7 @@
                     <th scope="col">Sobrenome</th>
                     <th scope="col">Nome Social</th>
                     <th scope="col">Data de Nascimento</th>
+                    <th scope="col">CPF</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,6 +63,8 @@
                         <td>@user.Sobrenome</td>
                         <td>@user.NomeSocial</td>
                         <td>@user.DataNascimento.ToString("dd/MM/yyyy")</td>
+                        <td>@user.Cpf</td>
+
                         <td class="col-2 text-center">
                             <a href="@Url.Action("Edit", "UsuarioCrud", new { id = user.Id })" class="btn btn-default">
                                 <i class="bi bi-pencil"></i>

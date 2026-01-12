@@ -34,16 +34,22 @@ namespace CadastroUsuarios.Controllers
 
         [HttpPost, ActionName("Cadastrar")]
         [ValidateAntiForgeryToken]
-        public ActionResult CadastrarPost([Bind(Include = "Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Senha")] UsuarioModel usuarioModel)
+        public ActionResult CadastrarPost([Bind(Include = "Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                db.Usuarios.Add(usuarioModel);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.mensagemErro = "Usuário não cadastrado";
+                return View(usuarioModel);
+            }
+            if (!ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf)) { 
+                ViewBag.mensagemErro = "Este CPF já está cadastrado";
+                return View(usuarioModel);
             }
 
-            return View(usuarioModel);
+            db.Usuarios.Add(usuarioModel);
+            db.SaveChanges();
+            TempData["mensagemSucesso"] = "Usuário Cadastrado";
+            return RedirectToAction("Index");    
         }
 
         public ActionResult Edit(int? id)
@@ -63,15 +69,23 @@ namespace CadastroUsuarios.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Senha")] UsuarioModel usuarioModel)
+        public ActionResult Edit([Bind(Include = "Id,Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                db.Entry(usuarioModel).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.mensagemErro = "Usuário não cadastrado";
+                return View(usuarioModel);
             }
-            return View(usuarioModel);
+            if (!ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
+            {
+                ViewBag.mensagemErro = "Este CPF já está cadastrado";
+                return View(usuarioModel);
+            }
+
+            db.Entry(usuarioModel).State = EntityState.Modified;
+                db.SaveChanges();
+                TempData["mensagemSucesso"] = "Usuário Atualizado";
+                return RedirectToAction("Index");
         }
 
         public ActionResult Deletar(int? id)
@@ -95,6 +109,7 @@ namespace CadastroUsuarios.Controllers
             UsuarioModel usuarioModel = db.Usuarios.Find(id);
             db.Usuarios.Remove(usuarioModel);
             db.SaveChanges();
+            TempData["mensagemSucesso"] = "Usuário Excluído";
             return RedirectToAction("Index");
         }
 
@@ -132,11 +147,14 @@ namespace CadastroUsuarios.Controllers
 
             return query;
         }
-        private bool ValidaUsuario(int id)
+        private bool ValidaCpfUsuario(int id, string cpf)
         {
-            return 1 == 1;
+            if (id == 0)
+            {
+                return !db.Usuarios.Any(u => u.Cpf == cpf);
+            }
+            return !db.Usuarios.Any(u => u.Cpf == cpf && u.Id != id);
         }
-
 
     }
 }

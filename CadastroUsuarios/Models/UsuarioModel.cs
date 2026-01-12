@@ -27,13 +27,14 @@ namespace CadastroUsuarios.Models
         [Display(Name = "Nome Social")]
         public string NomeSocial { get; set; }
 
-        //[Required]
-        //[StringLength(11, MinimumLength = 11)]
-        //public string Cpf { get; set; }
-
         [Display(Name = "Data de nascimento")]
-        [Column(TypeName = "datetime2")]
+        [Column(TypeName = "datetime")]
         public DateTime DataNascimento { get; set; }
+
+        [Required]
+        [StringLength(11, MinimumLength = 11)]
+        [Display(Name = "CPF")]
+        public string Cpf { get; set; }
 
         [Required]
         [StringLength(250)]
