@@ -1,0 +1,158 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using CadastroUsuarios.Data;
+using CadastroUsuarios.Models;
+
+namespace CadastroUsuarios.Controllers
+{
+    public class UsuarioCrudController : Controller
+    {
+        private AppDbContext db = new AppDbContext();
+
+        public ActionResult Index(string filtro = "todos", string termoPesquisa = "")
+        {
+            var query = PesquisaUsuario(filtro, termoPesquisa);
+
+            List<UsuarioModel> usuarios = query.ToList();
+
+            ViewBag.FiltroAtual = filtro;
+            ViewBag.TermoPesquisa = termoPesquisa;
+
+            return View(usuarios);
+        }
+
+        public ActionResult Cadastrar()
+        {
+            return View();
+        }
+
+        [HttpPost, ActionName("Cadastrar")]
+        [ValidateAntiForgeryToken]
+        public ActionResult CadastrarPost([Bind(Include = "Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.mensagemErro = "Usuário não cadastrado";
+                return View(usuarioModel);
+            }
+            if (!ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf)) { 
+                ViewBag.mensagemErro = "Este CPF já está cadastrado";
+                return View(usuarioModel);
+            }
+
+            db.Usuarios.Add(usuarioModel);
+            db.SaveChanges();
+            TempData["mensagemSucesso"] = "Usuário Cadastrado";
+            return RedirectToAction("Index");    
+        }
+
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            UsuarioModel usuarioModel = db.Usuarios.Find(id);
+            if (usuarioModel == null)
+            {
+                return HttpNotFound();
+            }
+            return View(usuarioModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.mensagemErro = "Usuário não cadastrado";
+                return View(usuarioModel);
+            }
+            if (!ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
+            {
+                ViewBag.mensagemErro = "Este CPF já está cadastrado";
+                return View(usuarioModel);
+            }
+
+            db.Entry(usuarioModel).State = EntityState.Modified;
+                db.SaveChanges();
+                TempData["mensagemSucesso"] = "Usuário Atualizado";
+                return RedirectToAction("Index");
+        }
+
+        public ActionResult Deletar(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            UsuarioModel usuarioModel = db.Usuarios.Find(id);
+            if (usuarioModel == null)
+            {
+                return HttpNotFound();
+            }
+            return View(usuarioModel);
+        }
+
+        [HttpPost, ActionName("Deletar")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            UsuarioModel usuarioModel = db.Usuarios.Find(id);
+            db.Usuarios.Remove(usuarioModel);
+            db.SaveChanges();
+            TempData["mensagemSucesso"] = "Usuário Excluído";
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private IQueryable<UsuarioModel> PesquisaUsuario(string filtro, string termoPesquisa)
+        {
+            IQueryable<UsuarioModel> query = db.Usuarios;
+
+            if (filtro == "ativo")
+                query = query.Where(u => u.Ativo == true);
+            
+            else if (filtro == "inativo")
+                query = query.Where(u => u.Ativo == false);
+            
+
+            if (!string.IsNullOrEmpty(termoPesquisa))
+            {
+                termoPesquisa = termoPesquisa.Trim().ToLower();
+                query = query.Where(u =>
+                    u.Nome.ToLower().Contains(termoPesquisa) ||
+                    u.Sobrenome.ToLower().Contains(termoPesquisa) ||
+                    u.NomeSocial.ToLower().Contains(termoPesquisa)
+                );
+            }
+
+            return query;
+        }
+        private bool ValidaCpfUsuario(int id, string cpf)
+        {
+            if (id == 0)
+            {
+                return !db.Usuarios.Any(u => u.Cpf == cpf);
+            }
+            return !db.Usuarios.Any(u => u.Cpf == cpf && u.Id != id);
+        }
+
+    }
+}

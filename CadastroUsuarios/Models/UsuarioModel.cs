@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
 namespace CadastroUsuarios.Models
 {
-    public class UsuarioViewModel {
+    public class UsuarioModel {
+
+        public int Id { get; set; }
 
         [Display(Name = "Status")]
         public bool Ativo { get; set; }
@@ -18,7 +21,6 @@ namespace CadastroUsuarios.Models
 
         [Required]
         [StringLength(100)]
-        [Display(Name = "Sobrenome")]
         public string Sobrenome { get; set; }
 
         [StringLength(100)]
@@ -26,7 +28,13 @@ namespace CadastroUsuarios.Models
         public string NomeSocial { get; set; }
 
         [Display(Name = "Data de nascimento")]
+        [Column(TypeName = "datetime")]
         public DateTime DataNascimento { get; set; }
+
+        [Required]
+        [Display(Name = "CPF")]
+        [RegularExpression(@"^\d{11}$", ErrorMessage = "CPF deve conter 11 dígitos")]
+        public string Cpf { get; set; }
 
         [Required]
         [StringLength(250)]

@@ -1,0 +1,91 @@
+﻿@model CadastroUsuarios.Models.UsuarioModel
+
+@{
+    ViewBag.Title = "Deletar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Subtitulo {
+    Exclusão de Usuário
+}
+
+@*TODO: modal*@
+<div class="container m-3">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="mb-3 me-2">
+                <label class="form-label fw-bold">
+                    @Html.DisplayNameFor(model => model.Ativo)
+                </label>
+                <div>
+                    @Html.DisplayFor(model => model.Ativo)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-3">
+                <label class="form-label fw-bold">
+                    @Html.DisplayNameFor(model => model.Nome)
+                </label>
+                <div>
+                    @Html.DisplayFor(model => model.Nome)
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="mb-3">
+                <label class="form-label fw-bold">
+                    @Html.DisplayNameFor(model => model.Sobrenome)
+                </label>
+                <div>
+                    @Html.DisplayFor(model => model.Sobrenome)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="mb-3">
+                <label class="form-label fw-bold">
+                    @Html.DisplayNameFor(model => model.NomeSocial)
+                </label>
+                <div>
+                    @Html.DisplayFor(model => model.NomeSocial)
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="mb-3">
+                <label class="form-label fw-bold">
+                    @Html.DisplayNameFor(model => model.DataNascimento)
+                </label>
+                <div>
+                    @Model.DataNascimento.ToString("dd/MM/yyyy")
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-3">
+                <label class="form-label fw-bold">
+                    @Html.DisplayNameFor(model => model.Cpf)
+                </label>
+                <div>
+                    @Html.DisplayFor(model => model.Cpf)
+                </div>
+            </div>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Excluir" class="btn btn-danger" />
+            <a href="@Url.Action("Index", "UsuarioCrud")" class="btn btn-default">Voltar</a>
+        </div>
+    }
+</div>
+   
