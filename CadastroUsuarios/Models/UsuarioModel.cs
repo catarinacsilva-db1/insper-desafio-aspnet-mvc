@@ -32,8 +32,8 @@ namespace CadastroUsuarios.Models
         public DateTime DataNascimento { get; set; }
 
         [Required]
-        [StringLength(11, MinimumLength = 11)]
         [Display(Name = "CPF")]
+        [RegularExpression(@"^\d{11}$", ErrorMessage = "CPF deve conter 11 dígitos")]
         public string Cpf { get; set; }
 
         [Required]

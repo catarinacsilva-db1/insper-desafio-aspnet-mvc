@@ -46,7 +46,7 @@
         </div>
         <div class="col-md-6 ab-3">
             @Html.LabelFor(x => x.Cpf, new { @class = "form-label" })
-            @Html.TextBoxFor(x => x.Cpf, new { @class = "form-control", @required = true })
+            @Html.TextBoxFor(x => x.Cpf, new { @class = "form-control", @required = true, @pattern = @"\d{11}", @inputmode = "numeric" })
             @Html.ValidationMessageFor(x => x.Cpf, string.Empty, new { @class = "text-danger" })
         </div>
     </div>
