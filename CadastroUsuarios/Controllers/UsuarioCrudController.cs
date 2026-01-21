@@ -127,13 +127,11 @@ namespace CadastroUsuarios.Controllers
             IQueryable<UsuarioModel> query = db.Usuarios;
 
             if (filtro == "ativo")
-            {
                 query = query.Where(u => u.Ativo == true);
-            }
+            
             else if (filtro == "inativo")
-            {
                 query = query.Where(u => u.Ativo == false);
-            }
+            
 
             if (!string.IsNullOrEmpty(termoPesquisa))
             {

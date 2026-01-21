@@ -34,7 +34,7 @@
         </div>
         <div class="col-md-6 ab-3">
             @Html.LabelFor(x => x.DataNascimento, new { @class = "form-label" })
-            @Html.TextBoxFor(x => x.DataNascimento, new { @class = "form-control", @type = "date", @required = true })
+            @Html.TextBoxFor(x => x.DataNascimento, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date", @required = true })
             @Html.ValidationMessageFor(x => x.DataNascimento, string.Empty, new { @class = "text-danger" })
         </div>
         <div class="col-md-6 ab-3">
