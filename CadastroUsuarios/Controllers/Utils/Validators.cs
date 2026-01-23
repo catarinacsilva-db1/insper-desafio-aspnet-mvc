@@ -9,16 +9,16 @@ namespace CadastroUsuarios.Controllers.Utils
 {
     public class Validators
     {
-        private readonly AppDbContext db;
+        private readonly AppDbContext _db;
 
         public Validators(AppDbContext db)
         {
-            this.db = db;
+            _db = db;
         }
 
         public IQueryable<UsuarioModel> PesquisaUsuario(string filtro, string termoPesquisa)
         {
-            IQueryable<UsuarioModel> query = db.Usuarios;
+            IQueryable<UsuarioModel> query = _db.Usuarios;
 
             if (filtro == "ativo")
                 query = query.Where(u => u.Ativo == true);
@@ -43,9 +43,9 @@ namespace CadastroUsuarios.Controllers.Utils
         {
             if (id == 0)
             {
-                return !db.Usuarios.Any(u => u.Cpf == cpf);
+                return !_db.Usuarios.Any(u => u.Cpf == cpf);
             }
-            return !db.Usuarios.Any(u => u.Cpf == cpf && u.Id != id);
+            return !_db.Usuarios.Any(u => u.Cpf == cpf && u.Id != id);
         }
     }
 }

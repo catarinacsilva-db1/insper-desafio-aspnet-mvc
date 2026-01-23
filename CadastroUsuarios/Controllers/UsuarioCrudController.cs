@@ -1,32 +1,29 @@
-﻿using System;
+﻿using CadastroUsuarios.Controllers.Utils;
+using CadastroUsuarios.Data;
+using CadastroUsuarios.Models;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using CadastroUsuarios.Controllers.Utils;
-using CadastroUsuarios.Data;
-using CadastroUsuarios.Models;
 
 
 namespace CadastroUsuarios.Controllers
 {
     public class UsuarioCrudController : Controller
     {
-        private readonly AppDbContext db;
-        private readonly Validators validator;
+        private readonly AppDbContext _db;
+        private readonly Validators _validator;
 
         public UsuarioCrudController()
         {
-            db = new AppDbContext();
-            validator = new Validators(db);
+            _db = new AppDbContext();
+            _validator = new Validators(_db);
         }
 
         public ActionResult Index(string filtro = "todos", string termoPesquisa = "")
         {
-            var query = validator.PesquisaUsuario(filtro, termoPesquisa);
+            var query = _validator.PesquisaUsuario(filtro, termoPesquisa);
 
             List<UsuarioModel> usuarios = query.ToList();
 
@@ -42,7 +39,7 @@ namespace CadastroUsuarios.Controllers
         }
 
 
- //TODO: mudar de bind para busca por ID
+        //TODO: mudar de bind para busca por ID
         [HttpPost, ActionName("Cadastrar")]
         [ValidateAntiForgeryToken]
         public ActionResult CadastrarPost([Bind(Include = "Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
@@ -52,16 +49,16 @@ namespace CadastroUsuarios.Controllers
                 ViewBag.mensagemErro = "Usuário não cadastrado";
                 return View(usuarioModel);
             }
-            if (!validator.ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
+            if (!_validator.ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
             {
                 ViewBag.mensagemErro = "Este CPF já está cadastrado";
                 return View(usuarioModel);
             }
 
-            db.Usuarios.Add(usuarioModel);
-            db.SaveChanges();
+            _db.Usuarios.Add(usuarioModel);
+            _db.SaveChanges();
             TempData["mensagemSucesso"] = "Usuário Cadastrado";
-            return RedirectToAction("Index");    
+            return RedirectToAction("Index");
         }
 
         public ActionResult Edit(int? id)
@@ -70,7 +67,7 @@ namespace CadastroUsuarios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UsuarioModel usuarioModel = db.Usuarios.Find(id);
+            UsuarioModel usuarioModel = _db.Usuarios.Find(id);
             if (usuarioModel == null)
             {
                 return HttpNotFound();
@@ -88,14 +85,14 @@ namespace CadastroUsuarios.Controllers
                 ViewBag.mensagemErro = "Usuário não cadastrado";
                 return View(usuarioModel);
             }
-            if (!validator.ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
+            if (!_validator.ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
             {
                 ViewBag.mensagemErro = "Este CPF já está cadastrado";
                 return View(usuarioModel);
             }
 
-            db.Entry(usuarioModel).State = EntityState.Modified;
-            db.SaveChanges();
+            _db.Entry(usuarioModel).State = EntityState.Modified;
+            _db.SaveChanges();
             TempData["mensagemSucesso"] = "Usuário Atualizado";
             return RedirectToAction("Index");
         }
@@ -106,7 +103,7 @@ namespace CadastroUsuarios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UsuarioModel usuarioModel = db.Usuarios.Find(id);
+            UsuarioModel usuarioModel = _db.Usuarios.Find(id);
             if (usuarioModel == null)
             {
                 return HttpNotFound();
@@ -118,9 +115,9 @@ namespace CadastroUsuarios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            UsuarioModel usuarioModel = db.Usuarios.Find(id);
-            db.Usuarios.Remove(usuarioModel);
-            db.SaveChanges();
+            UsuarioModel usuarioModel = _db.Usuarios.Find(id);
+            _db.Usuarios.Remove(usuarioModel);
+            _db.SaveChanges();
             TempData["mensagemSucesso"] = "Usuário Excluído";
             return RedirectToAction("Index");
         }
@@ -129,12 +126,12 @@ namespace CadastroUsuarios.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        
+
 
     }
 }

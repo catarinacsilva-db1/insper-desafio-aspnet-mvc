@@ -222,8 +222,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\UsuarioCrud\Index.cshtml" />
     <Content Include="Views\UsuarioCrud\Cadastrar.cshtml" />
-    <Content Include="Views\UsuarioCrud\Deletar.cshtml" />
     <Content Include="Views\UsuarioCrud\Edit.cshtml" />
+    <Content Include="Views\UsuarioCrud\_ConfirmarDeletar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
