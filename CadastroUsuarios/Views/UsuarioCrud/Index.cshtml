@@ -73,11 +73,12 @@
                             <a href="@Url.Action("Edit", "UsuarioCrud", new { id = user.Id })" class="btn btn-default">
                                 <i class="bi bi-pencil"></i>
                             </a>
-                            <a href="@Url.Action("Deletar", "UsuarioCrud", new { id = user.Id })" class="btn btn-default">
+                            <a href="@Url.Action("Deletar", "UsuarioCrud", new { id = user.Id })" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#confirmaDeletar@(user.Id)">
                                 <i class="bi bi-trash"></i>
                             </a>
                         </td>
                     </tr>
+                    @Html.Partial("_ConfirmarDeletar", user)
                 }
             </tbody>
         </table>
@@ -90,6 +91,6 @@ else
     </div>
 }
 
-@*Html.Partial("_ListaObservacao")*@
-
 <a href="@Url.Action("Cadastrar", "UsuarioCrud")" class="btn btn-primary">Cadastrar</a>
+    
+
