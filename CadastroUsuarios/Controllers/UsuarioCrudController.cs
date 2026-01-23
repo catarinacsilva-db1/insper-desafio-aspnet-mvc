@@ -6,18 +6,27 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using CadastroUsuarios.Controllers.Utils;
 using CadastroUsuarios.Data;
 using CadastroUsuarios.Models;
+
 
 namespace CadastroUsuarios.Controllers
 {
     public class UsuarioCrudController : Controller
     {
-        private AppDbContext db = new AppDbContext();
+        private readonly AppDbContext db;
+        private readonly Validators validator;
+
+        public UsuarioCrudController()
+        {
+            db = new AppDbContext();
+            validator = new Validators(db);
+        }
 
         public ActionResult Index(string filtro = "todos", string termoPesquisa = "")
         {
-            var query = PesquisaUsuario(filtro, termoPesquisa);
+            var query = validator.PesquisaUsuario(filtro, termoPesquisa);
 
             List<UsuarioModel> usuarios = query.ToList();
 
@@ -32,6 +41,8 @@ namespace CadastroUsuarios.Controllers
             return View();
         }
 
+
+ //TODO: mudar de bind para busca por ID
         [HttpPost, ActionName("Cadastrar")]
         [ValidateAntiForgeryToken]
         public ActionResult CadastrarPost([Bind(Include = "Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
@@ -41,7 +52,8 @@ namespace CadastroUsuarios.Controllers
                 ViewBag.mensagemErro = "Usuário não cadastrado";
                 return View(usuarioModel);
             }
-            if (!ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf)) { 
+            if (!validator.ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
+            {
                 ViewBag.mensagemErro = "Este CPF já está cadastrado";
                 return View(usuarioModel);
             }
@@ -76,16 +88,16 @@ namespace CadastroUsuarios.Controllers
                 ViewBag.mensagemErro = "Usuário não cadastrado";
                 return View(usuarioModel);
             }
-            if (!ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
+            if (!validator.ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
             {
                 ViewBag.mensagemErro = "Este CPF já está cadastrado";
                 return View(usuarioModel);
             }
 
             db.Entry(usuarioModel).State = EntityState.Modified;
-                db.SaveChanges();
-                TempData["mensagemSucesso"] = "Usuário Atualizado";
-                return RedirectToAction("Index");
+            db.SaveChanges();
+            TempData["mensagemSucesso"] = "Usuário Atualizado";
+            return RedirectToAction("Index");
         }
 
         public ActionResult Deletar(int? id)
@@ -122,37 +134,7 @@ namespace CadastroUsuarios.Controllers
             base.Dispose(disposing);
         }
 
-        private IQueryable<UsuarioModel> PesquisaUsuario(string filtro, string termoPesquisa)
-        {
-            IQueryable<UsuarioModel> query = db.Usuarios;
-
-            if (filtro == "ativo")
-                query = query.Where(u => u.Ativo == true);
-            
-            else if (filtro == "inativo")
-                query = query.Where(u => u.Ativo == false);
-            
-
-            if (!string.IsNullOrEmpty(termoPesquisa))
-            {
-                termoPesquisa = termoPesquisa.Trim().ToLower();
-                query = query.Where(u =>
-                    u.Nome.ToLower().Contains(termoPesquisa) ||
-                    u.Sobrenome.ToLower().Contains(termoPesquisa) ||
-                    u.NomeSocial.ToLower().Contains(termoPesquisa)
-                );
-            }
-
-            return query;
-        }
-        private bool ValidaCpfUsuario(int id, string cpf)
-        {
-            if (id == 0)
-            {
-                return !db.Usuarios.Any(u => u.Cpf == cpf);
-            }
-            return !db.Usuarios.Any(u => u.Cpf == cpf && u.Id != id);
-        }
+        
 
     }
 }
