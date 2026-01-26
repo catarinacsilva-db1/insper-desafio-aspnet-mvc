@@ -47,7 +47,7 @@
         </div>
         <div class="col-md-6 ab-3">
             @Html.LabelFor(x => x.Cpf, new { @class = "form-label" })
-            @Html.TextBoxFor(x => x.Cpf, new { @class = "form-control cpf", @required = true})
+            @Html.TextBoxFor(x => x.Cpf, new { @class = "form-control cpf", @required = true })
             @Html.ValidationMessageFor(x => x.Cpf, string.Empty, new { @class = "text-danger" })
         </div>
     </div>
@@ -62,4 +62,5 @@
         <button type="submit" class="btn btn-primary">Cadastrar</button>
         <a href="@Url.Action("Index", "UsuarioCrud")" class="btn btn-default">Voltar</a>
     </section>
+    @Html.Hidden("Ativo", true)
 }
