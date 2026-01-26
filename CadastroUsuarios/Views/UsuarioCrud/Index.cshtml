@@ -66,7 +66,7 @@
                         <td class="cpf">@user.Cpf</td>
 
                         <td class="col-2 text-center">
-                            <a href="@Url.Action("AtualizarStatus", "UsuarioCrud", new { id = user.Id })" title="@(user.Ativo ? "Inativar" : "Ativar")" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#confirmaStatus@(user.Id)">
+                            <a href="@Url.Action("AtualizarStatus", "UsuarioCrud", new { id = user.Id })" title="@(user.Ativo ? "Inativar Usuário" : "Ativar Usuário")" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#confirmaStatus@(user.Id)">
                                 <i class="@(user.Ativo ? "bi bi-check-circle-fill text-success" : "bi bi-x-circle-fill text-secondary")"></i>
                             </a>
                             <a href="@Url.Action("Edit", "UsuarioCrud", new { id = user.Id })" class="btn btn-default">
