@@ -224,6 +224,7 @@
     <Content Include="Views\UsuarioCrud\Cadastrar.cshtml" />
     <Content Include="Views\UsuarioCrud\Edit.cshtml" />
     <Content Include="Views\UsuarioCrud\_ConfirmarDeletar.cshtml" />
+    <Content Include="Views\UsuarioCrud\_ConfirmarStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

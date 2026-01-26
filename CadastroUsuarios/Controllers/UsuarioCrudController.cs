@@ -78,7 +78,7 @@ namespace CadastroUsuarios.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
+        public ActionResult Edit([Bind(Include = "Id,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
         {
             if (!ModelState.IsValid)
             {
@@ -97,20 +97,6 @@ namespace CadastroUsuarios.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Deletar(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            UsuarioModel usuarioModel = _db.Usuarios.Find(id);
-            if (usuarioModel == null)
-            {
-                return HttpNotFound();
-            }
-            return View(usuarioModel);
-        }
-
         [HttpPost, ActionName("Deletar")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -119,6 +105,22 @@ namespace CadastroUsuarios.Controllers
             _db.Usuarios.Remove(usuarioModel);
             _db.SaveChanges();
             TempData["mensagemSucesso"] = "Usuário Excluído";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost, ActionName("AtualizarStatus")]
+        [ValidateAntiForgeryToken]
+        public ActionResult AtualizaStatus(int id)
+        {
+            UsuarioModel usuarioModel = _db.Usuarios.Find(id);
+            if (usuarioModel == null)
+            {
+                return HttpNotFound();
+            }
+
+            usuarioModel.Ativo = !usuarioModel.Ativo;
+            _db.SaveChanges();
+            TempData["mensagemSucesso"] = "Status do usuário atualizado";
             return RedirectToAction("Index");
         }
 
