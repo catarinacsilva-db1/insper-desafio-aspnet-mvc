@@ -1,5 +1,5 @@
-﻿using CadastroUsuarios.Data;
-using CadastroUsuarios.Models;
+﻿using CadastroUsuarios.Models;
+using CadastroUsuarios.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,24 +7,23 @@ using System.Web;
 
 namespace CadastroUsuarios.Controllers.Utils
 {
-    public class Validators
+    public class FiltroQueries
     {
-        private readonly AppDbContext _db;
-
-        public Validators(AppDbContext db)
+        private readonly IUsuarioRepository _repository;
+        public FiltroQueries(IUsuarioRepository repository)
         {
-            _db = db;
+            _repository = repository;
         }
 
         public IQueryable<UsuarioModel> PesquisaUsuario(string filtro, string termoPesquisa)
         {
-            IQueryable<UsuarioModel> query = _db.Usuarios;
+            IQueryable<UsuarioModel> query = _repository.ListarTodos().AsQueryable();
 
             if (filtro == "ativo")
-                query = query.Where(u => u.Ativo == true);
+                query = query.Where(u => u.Ativo);
 
             else if (filtro == "inativo")
-                query = query.Where(u => u.Ativo == false);
+                query = query.Where(u => !u.Ativo);
 
 
             if (!string.IsNullOrEmpty(termoPesquisa))
@@ -38,14 +37,6 @@ namespace CadastroUsuarios.Controllers.Utils
             }
 
             return query;
-        }
-        public bool ValidaCpfUsuario(int id, string cpf)
-        {
-            if (id == 0)
-            {
-                return !_db.Usuarios.Any(u => u.Cpf == cpf);
-            }
-            return !_db.Usuarios.Any(u => u.Cpf == cpf && u.Id != id);
         }
     }
 }
