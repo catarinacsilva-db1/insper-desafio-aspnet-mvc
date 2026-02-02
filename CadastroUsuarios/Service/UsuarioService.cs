@@ -1,13 +1,7 @@
 ﻿using CadastroUsuarios.Controllers.Utils;
-using CadastroUsuarios.Data;
 using CadastroUsuarios.Models;
 using CadastroUsuarios.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 namespace CadastroUsuarios.Service
 {
@@ -16,53 +10,61 @@ namespace CadastroUsuarios.Service
         private readonly IUsuarioRepository _repository;
         private readonly Validators _validator;
         private readonly FiltroQueries _filters;
-        public string mensagemValidacao { get; private set; }
+        public string MensagemValidacao { get; private set; }
 
-        public UsuarioService()
+        public UsuarioService(IUsuarioRepository repository)
         {
+            _repository = repository;
             _validator = new Validators(_repository);
             _filters = new FiltroQueries(_repository);
         }
-        public UsuarioModel Adicionar(UsuarioModel usuarioModel)
+        public UsuarioModel AdicionarUsuario(UsuarioModel usuarioModel)
         {
-            if (!_validator.ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
+            MensagemValidacao = null;
+
+            if (!_validator.ValidaCamposUsuario(usuarioModel))
             {
-                mensagemValidacao = _validator.MensagemValidacao;
-                return (usuarioModel);
+                MensagemValidacao = _validator.MensagemValidacao;
             }
 
-            _repository.Adicionar(usuarioModel); 
+            _repository.Adicionar(usuarioModel);
             return (usuarioModel);
         }
-        public UsuarioModel Editar(UsuarioModel usuarioModel)
+        public UsuarioModel EditarUsuario(UsuarioModel usuarioModel)
         {
-            if (!_validator.ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
+            MensagemValidacao = null;
+
+            if (!_validator.ValidaCamposUsuario(usuarioModel))
             {
-                mensagemValidacao = _validator.MensagemValidacao;
-                return (usuarioModel);
+                MensagemValidacao = _validator.MensagemValidacao;
             }
 
-            _repository.AtualizarUsuario(usuarioModel);
+            _repository.Atualizar(usuarioModel);
             return (usuarioModel);
         }
-        public UsuarioModel EditarStatus(int id)
+        public UsuarioModel EditarStatusUsuario(int id)
         {
-            return _repository.AtualizaStatusUsuario(id);
+            var usuario = BuscarPorId(id);
+            return _repository.AtualizaStatus(usuario);
         }
 
-        public void Deletar(int id)
+        public void DeletarUsuario(int id)
         {
-            _repository.Remover(id);
+            var usuario = BuscarPorId(id);
+            _repository.Remover(usuario);
+
         }
 
         public UsuarioModel BuscarPorId(int id)
         {
-            return _repository.BuscarPorId(id);
-        }
+            var usuario = _repository.BuscarPorId(id);
+            if (!_validator.ValidaBuscaUsuario(usuario))
+            {
+                MensagemValidacao = _validator.MensagemValidacao;
+                return null;
+            }
 
-        public IEnumerable<UsuarioModel> Listar()
-        {
-            return _repository.ListarTodos();
+            return usuario;
         }
 
         public IQueryable<UsuarioModel> PesquisaUsuario(string filtro, string termoPesquisa)

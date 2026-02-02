@@ -20,7 +20,17 @@ namespace CadastroUsuarios.Controllers.Utils
             _repository = repository;
         }
 
-        //boleanos temporarios até criar classes de exceçao
+        public bool ValidaBuscaUsuario (UsuarioModel usuarioModel)
+        {
+            if (usuarioModel == null)
+            {
+                MensagemValidacao = "Usuário não encontrado";
+                return false;
+            }
+            return true;
+        }
+
+        //TODO: boleanos temporarios até criar classes de exceçao
         public bool ValidaCamposUsuario(UsuarioModel usuarioModel)
         {
             if (!ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
@@ -34,6 +44,14 @@ namespace CadastroUsuarios.Controllers.Utils
                 MensagemValidacao = "Data de Nascimento inválida";
                 return false;
             }
+
+            if (!ValidaSenhaUsuario(usuarioModel.Senha))
+            {   
+                //TODO: mensagem de req de senha irao para partial view
+                MensagemValidacao = "Senha inválida. A senha deve ter no mínimo 6 caracteres, incluindo letras maiúsculas, minúsculas e números.";
+                return false;
+            }
+
             return true;
         }
 
@@ -56,7 +74,7 @@ namespace CadastroUsuarios.Controllers.Utils
             return true;
         }
 
-        public bool ValidaSenhaUsuario(string senha)
+        public static bool ValidaSenhaUsuario(string senha)
         {
             if (string.IsNullOrWhiteSpace(senha) || 
                 senha.Length < 6 || 
@@ -64,7 +82,6 @@ namespace CadastroUsuarios.Controllers.Utils
                 !senha.Any(char.IsUpper) ||
                 !senha.Any(char.IsLower))
             {
-                MensagemErro = "Senha inválida";
                 return false;
             }
             return true;

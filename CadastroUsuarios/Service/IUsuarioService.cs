@@ -9,10 +9,13 @@ namespace CadastroUsuarios.Service
 {
     public interface IUsuarioService
     {
-        UsuarioModel Adicionar(UsuarioModel usuarioModel);
-        UsuarioModel Editar(UsuarioModel usuarioModel);
-        UsuarioModel EditarStatus(int id);
-        void Deletar(int id);
-        IEnumerable<UsuarioModel> Listar();
+        string MensagemValidacao { get; }
+
+        UsuarioModel AdicionarUsuario(UsuarioModel usuarioModel);
+        UsuarioModel EditarUsuario(UsuarioModel usuarioModel);
+        UsuarioModel EditarStatusUsuario(int id);
+        UsuarioModel BuscarPorId(int id);
+        void DeletarUsuario(int id);
+        IQueryable<UsuarioModel> PesquisaUsuario(string filtro, string termoPesquisa);
     }
 }

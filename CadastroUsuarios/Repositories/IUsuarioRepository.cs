@@ -10,10 +10,10 @@ namespace CadastroUsuarios.Repositories
     public interface IUsuarioRepository : IDisposable
     {
         UsuarioModel Adicionar(UsuarioModel usuario);
-        UsuarioModel BuscarPorId(int id);
         IEnumerable<UsuarioModel> ListarTodos();
-        UsuarioModel AtualizarUsuario(UsuarioModel usuario);
-        UsuarioModel AtualizaStatusUsuario(int id);
-        void Remover(int id);
+        UsuarioModel Atualizar(UsuarioModel usuario);
+        UsuarioModel AtualizaStatus(UsuarioModel usuario);
+        void Remover(UsuarioModel usuario);
+        UsuarioModel BuscarPorId(int id);
     }
 }

@@ -1,9 +1,7 @@
 ﻿using CadastroUsuarios.Data;
 using CadastroUsuarios.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace CadastroUsuarios.Repositories
 {
@@ -15,7 +13,6 @@ namespace CadastroUsuarios.Repositories
         {
             _db = db;
         }
-        
 
         public UsuarioModel Adicionar(UsuarioModel usuario)
         {
@@ -24,7 +21,7 @@ namespace CadastroUsuarios.Repositories
             return usuario;
         }
 
-        public UsuarioModel AtualizarUsuario(UsuarioModel usuario)
+        public UsuarioModel Atualizar(UsuarioModel usuario)
         {
             var usuarioExistente = BuscarPorId(usuario.Id);
             if (usuarioExistente != null)
@@ -42,15 +39,10 @@ namespace CadastroUsuarios.Repositories
             return usuario;
         }
 
-        public UsuarioModel AtualizaStatusUsuario(int id)
+        public UsuarioModel AtualizaStatus(UsuarioModel usuario)
         {
-            var usuario = BuscarPorId(id);
-            if (usuario != null)
-            {
-                usuario.Ativo = !usuario.Ativo;
-                _db.SaveChanges();
-                return usuario;
-            }
+            usuario.Ativo = !usuario.Ativo;
+            _db.SaveChanges();
             return usuario;
         }
 
@@ -59,14 +51,10 @@ namespace CadastroUsuarios.Repositories
             return _db.Usuarios.ToList();
         }
 
-        public void Remover(int id)
+        public void Remover(UsuarioModel usuario)
         {
-            var usuario = BuscarPorId(id);
-            if (usuario != null)
-            {
-                _db.Usuarios.Remove(usuario);
-                _db.SaveChanges();
-            }
+            _db.Usuarios.Remove(usuario);
+            _db.SaveChanges();
         }
         public UsuarioModel BuscarPorId(int id)
         {
