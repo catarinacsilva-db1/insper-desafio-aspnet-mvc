@@ -10,28 +10,48 @@ namespace CadastroUsuarios.Repositories
     public class UsuarioRepository : IUsuarioRepository
     {
         private readonly AppDbContext _db;
+
         public UsuarioRepository(AppDbContext db)
         {
-            _db = db;   
+            _db = db;
         }
+        
 
-        public void Adicionar(UsuarioModel usuario)
+        public UsuarioModel Adicionar(UsuarioModel usuario)
         {
             _db.Usuarios.Add(usuario);
             _db.SaveChanges();
+            return usuario;
         }
 
-        public void Atualizar(UsuarioModel usuario)
+        public UsuarioModel AtualizarUsuario(UsuarioModel usuario)
         {
             var usuarioExistente = BuscarPorId(usuario.Id);
             if (usuarioExistente != null)
             {
-                //TODO: fazer mapeamento dos campos
                 usuarioExistente.Nome = usuario.Nome;
+                usuarioExistente.Sobrenome = usuario.Sobrenome;
+                usuarioExistente.NomeSocial = usuario.NomeSocial;
+                usuarioExistente.DataNascimento = usuario.DataNascimento;
+                usuarioExistente.Cpf = usuario.Cpf;
                 usuarioExistente.Senha = usuario.Senha;
 
                 _db.SaveChanges();
+                return usuarioExistente;
             }
+            return usuario;
+        }
+
+        public UsuarioModel AtualizaStatusUsuario(int id)
+        {
+            var usuario = BuscarPorId(id);
+            if (usuario != null)
+            {
+                usuario.Ativo = !usuario.Ativo;
+                _db.SaveChanges();
+                return usuario;
+            }
+            return usuario;
         }
 
         public IEnumerable<UsuarioModel> ListarTodos()
@@ -51,6 +71,11 @@ namespace CadastroUsuarios.Repositories
         public UsuarioModel BuscarPorId(int id)
         {
             return _db.Usuarios.Find(id);
+        }
+
+        public void Dispose()
+        {
+            _db.Dispose();
         }
     }
 }

@@ -4,6 +4,7 @@ using CadastroUsuarios.Models;
 using CadastroUsuarios.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,6 +16,7 @@ namespace CadastroUsuarios.Service
         private readonly IUsuarioRepository _repository;
         private readonly Validators _validator;
         private readonly FiltroQueries _filters;
+        public string mensagemValidacao { get; private set; }
 
         public UsuarioService()
         {
@@ -23,32 +25,50 @@ namespace CadastroUsuarios.Service
         }
         public UsuarioModel Adicionar(UsuarioModel usuarioModel)
         {
-            throw new NotImplementedException();
+            if (!_validator.ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
+            {
+                mensagemValidacao = _validator.MensagemValidacao;
+                return (usuarioModel);
+            }
+
+            _repository.Adicionar(usuarioModel); 
+            return (usuarioModel);
+        }
+        public UsuarioModel Editar(UsuarioModel usuarioModel)
+        {
+            if (!_validator.ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
+            {
+                mensagemValidacao = _validator.MensagemValidacao;
+                return (usuarioModel);
+            }
+
+            _repository.AtualizarUsuario(usuarioModel);
+            return (usuarioModel);
+        }
+        public UsuarioModel EditarStatus(int id)
+        {
+            return _repository.AtualizaStatusUsuario(id);
         }
 
         public void Deletar(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public UsuarioModel Editar(UsuarioModel usuarioModel)
-        {
-            throw new NotImplementedException();
+            _repository.Remover(id);
         }
 
         public UsuarioModel BuscarPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repository.BuscarPorId(id);
         }
 
         public IEnumerable<UsuarioModel> Listar()
         {
-            throw new NotImplementedException();
+            return _repository.ListarTodos();
         }
 
         public IQueryable<UsuarioModel> PesquisaUsuario(string filtro, string termoPesquisa)
         {
             return _filters.PesquisaUsuario(filtro, termoPesquisa);
         }
+
     }
 }

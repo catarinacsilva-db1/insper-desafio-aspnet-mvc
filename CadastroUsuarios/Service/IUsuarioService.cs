@@ -11,6 +11,7 @@ namespace CadastroUsuarios.Service
     {
         UsuarioModel Adicionar(UsuarioModel usuarioModel);
         UsuarioModel Editar(UsuarioModel usuarioModel);
+        UsuarioModel EditarStatus(int id);
         void Deletar(int id);
         IEnumerable<UsuarioModel> Listar();
     }

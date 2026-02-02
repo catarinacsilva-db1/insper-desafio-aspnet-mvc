@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace CadastroUsuarios.Repositories
 {
-    public interface IUsuarioRepository
+    public interface IUsuarioRepository : IDisposable
     {
-        void Adicionar(UsuarioModel usuario);
+        UsuarioModel Adicionar(UsuarioModel usuario);
         UsuarioModel BuscarPorId(int id);
         IEnumerable<UsuarioModel> ListarTodos();
-        void Atualizar(UsuarioModel usuario);
+        UsuarioModel AtualizarUsuario(UsuarioModel usuario);
+        UsuarioModel AtualizaStatusUsuario(int id);
         void Remover(int id);
     }
 }

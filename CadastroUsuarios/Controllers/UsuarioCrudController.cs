@@ -85,14 +85,7 @@ namespace CadastroUsuarios.Controllers
                 ViewBag.mensagemErro = "Usuário não cadastrado";
                 return View(usuarioModel);
             }
-            if (!_validator.ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
-            {
-                ViewBag.mensagemErro = "Este CPF já está cadastrado";
-                return View(usuarioModel);
-            }
 
-            _db.Entry(usuarioModel).State = EntityState.Modified;
-            _db.SaveChanges();
             TempData["mensagemSucesso"] = "Usuário Atualizado";
             return RedirectToAction("Index");
         }
@@ -124,14 +117,7 @@ namespace CadastroUsuarios.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+
 
 
 

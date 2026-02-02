@@ -13,7 +13,7 @@ namespace CadastroUsuarios.Controllers.Utils
     {
         private readonly IUsuarioRepository _repository;
 
-        public string MensagemErro { get; private set; }
+        public string MensagemValidacao { get; private set; }
 
         public Validators(IUsuarioRepository repository)
         {
@@ -25,13 +25,13 @@ namespace CadastroUsuarios.Controllers.Utils
         {
             if (!ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
             {
-                MensagemErro = "Este CPF já está cadastrado";
+                MensagemValidacao = "Este CPF já está cadastrado";
                 return false;
             }
 
             if (!ValidaIdadeUsuario(usuarioModel.DataNascimento))
             {
-                MensagemErro = "Data de Nascimento inválida";
+                MensagemValidacao = "Data de Nascimento inválida";
                 return false;
             }
             return true;
