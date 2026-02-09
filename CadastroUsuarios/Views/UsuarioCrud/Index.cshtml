@@ -62,8 +62,8 @@
                         <td>@user.Nome</td>
                         <td>@user.Sobrenome</td>
                         <td>@user.NomeSocial</td>
-                        <td>@user.DataNascimento.ToString("dd/MM/yyyy")</td>
-                        <td class="cpf">@user.Cpf</td>
+                        <td class="text-center">@user.DataNascimento.ToString("dd/MM/yyyy")</td>
+                        <td class="cpf text-center">@user.Cpf</td>
 
                         <td class="col-2 text-center">
                             <a href="@Url.Action("AtualizarStatus", "UsuarioCrud", new { id = user.Id })" title="@(user.Ativo ? "Inativar Usuário" : "Ativar Usuário")" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#confirmaStatus@(user.Id)">
