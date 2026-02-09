@@ -1,6 +1,8 @@
 ﻿using CadastroUsuarios.Controllers.Utils;
 using CadastroUsuarios.Data;
 using CadastroUsuarios.Models;
+using CadastroUsuarios.Repositories;
+using CadastroUsuarios.Service;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -12,18 +14,17 @@ namespace CadastroUsuarios.Controllers
 {
     public class UsuarioCrudController : Controller
     {
-        private readonly AppDbContext _db;
-        private readonly Validators _validator;
+        private readonly IUsuarioService _service;
 
-        public UsuarioCrudController()
+        public UsuarioCrudController(IUsuarioService service)
         {
-            _db = new AppDbContext();
-            _validator = new Validators(_db);
+            _service = service;
         }
+        
 
         public ActionResult Index(string filtro = "todos", string termoPesquisa = "")
         {
-            var query = _validator.PesquisaUsuario(filtro, termoPesquisa);
+            var query = _service.PesquisaUsuario(filtro, termoPesquisa);
 
             List<UsuarioModel> usuarios = query.ToList();
 
@@ -33,6 +34,7 @@ namespace CadastroUsuarios.Controllers
             return View(usuarios);
         }
 
+        // apenas retorna view
         public ActionResult Cadastrar()
         {
             return View();
@@ -49,25 +51,27 @@ namespace CadastroUsuarios.Controllers
                 ViewBag.mensagemErro = "Usuário não cadastrado";
                 return View(usuarioModel);
             }
-            if (!_validator.ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
-            {
-                ViewBag.mensagemErro = "Este CPF já está cadastrado";
-                return View(usuarioModel);
-            }
+            
+            _service.AdicionarUsuario(usuarioModel);
 
-            _db.Usuarios.Add(usuarioModel);
-            _db.SaveChanges();
+            //validação de serviço temporaria até implementar exceptions
+            if (_service.MensagemValidacao != null)
+            {
+                ViewBag.mensagemErro = _service.MensagemValidacao;
+                return View(usuarioModel); 
+            }
             TempData["mensagemSucesso"] = "Usuário Cadastrado";
             return RedirectToAction("Index");
+            
         }
 
-        public ActionResult Edit(int? id)
+        public ActionResult Editar(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UsuarioModel usuarioModel = _db.Usuarios.Find(id);
+            UsuarioModel usuarioModel = _service.BuscarPorId(id.Value);
             if (usuarioModel == null)
             {
                 return HttpNotFound();
@@ -78,21 +82,22 @@ namespace CadastroUsuarios.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
+        public ActionResult Editar([Bind(Include = "Id,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
         {
             if (!ModelState.IsValid)
             {
                 ViewBag.mensagemErro = "Usuário não cadastrado";
                 return View(usuarioModel);
             }
-            if (!_validator.ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
+
+            _service.EditarUsuario(usuarioModel);
+
+            if (_service.MensagemValidacao != null)
             {
-                ViewBag.mensagemErro = "Este CPF já está cadastrado";
+                ViewBag.mensagemErro = _service.MensagemValidacao;
                 return View(usuarioModel);
             }
 
-            _db.Entry(usuarioModel).State = EntityState.Modified;
-            _db.SaveChanges();
             TempData["mensagemSucesso"] = "Usuário Atualizado";
             return RedirectToAction("Index");
         }
@@ -101,39 +106,32 @@ namespace CadastroUsuarios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            UsuarioModel usuarioModel = _db.Usuarios.Find(id);
-            _db.Usuarios.Remove(usuarioModel);
-            _db.SaveChanges();
+            _service.DeletarUsuario(id);
+            
+            if (_service.MensagemValidacao != null)
+            {
+                ViewBag.mensagemErro = _service.MensagemValidacao;
+                return RedirectToAction("Index");
+            }
+
             TempData["mensagemSucesso"] = "Usuário Excluído";
             return RedirectToAction("Index");
         }
 
         [HttpPost, ActionName("AtualizarStatus")]
         [ValidateAntiForgeryToken]
-        public ActionResult AtualizaStatus(int id)
+        public ActionResult AtualizarStatus(int id)
         {
-            UsuarioModel usuarioModel = _db.Usuarios.Find(id);
-            if (usuarioModel == null)
+            _service.EditarStatusUsuario(id);
+            
+            if (_service.MensagemValidacao != null)
             {
-                return HttpNotFound();
+                ViewBag.mensagemErro = _service.MensagemValidacao;
+                return RedirectToAction("Index");
             }
 
-            usuarioModel.Ativo = !usuarioModel.Ativo;
-            _db.SaveChanges();
             TempData["mensagemSucesso"] = "Status do usuário atualizado";
             return RedirectToAction("Index");
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-
-
     }
 }

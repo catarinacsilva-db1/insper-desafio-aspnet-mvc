@@ -1,3 +1,4 @@
+using CadastroUsuarios.App_Start;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace CadastroUsuarios
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            DependencyConfig.RegisterDependencies();
         }
     }
 }

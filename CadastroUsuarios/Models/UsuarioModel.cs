@@ -33,7 +33,6 @@ namespace CadastroUsuarios.Models
 
         [Required]
         [Display(Name = "CPF")]
-        //levar para classe de validação
         [RegularExpression(@"^\d{11}$", ErrorMessage = "CPF deve conter 11 dígitos")]
         public string Cpf { get; set; }
 
