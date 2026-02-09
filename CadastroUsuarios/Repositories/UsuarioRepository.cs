@@ -46,9 +46,9 @@ namespace CadastroUsuarios.Repositories
             return usuario;
         }
 
-        public IEnumerable<UsuarioModel> ListarTodos()
+        public IQueryable<UsuarioModel> ListarTodos()
         {
-            return _db.Usuarios.ToList();
+            return _db.Usuarios;
         }
 
         public void Remover(UsuarioModel usuario)

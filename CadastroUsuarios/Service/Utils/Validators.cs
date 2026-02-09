@@ -22,6 +22,7 @@ namespace CadastroUsuarios.Controllers.Utils
 
         public bool ValidaBuscaUsuario (UsuarioModel usuarioModel)
         {
+            MensagemValidacao = null;
             if (usuarioModel == null)
             {
                 MensagemValidacao = "Usuário não encontrado";
@@ -33,6 +34,7 @@ namespace CadastroUsuarios.Controllers.Utils
         //TODO: boleanos temporarios até criar classes de exceçao
         public bool ValidaCamposUsuario(UsuarioModel usuarioModel)
         {
+            MensagemValidacao = null;
             if (!ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
             {
                 MensagemValidacao = "Este CPF já está cadastrado";
@@ -67,7 +69,7 @@ namespace CadastroUsuarios.Controllers.Utils
         public static bool ValidaIdadeUsuario(DateTime dataNascimento)
         {
             var anoLimite = DateTime.Today.Year - 120;
-            if (dataNascimento.Year > DateTime.Today.Year || dataNascimento.Year < anoLimite)
+            if (dataNascimento > DateTime.Today || dataNascimento.Year < anoLimite)
             {
                 return false;
             }
