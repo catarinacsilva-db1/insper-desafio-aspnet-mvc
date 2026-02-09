@@ -1,6 +1,7 @@
 ﻿using CadastroUsuarios.Controllers.Utils;
 using CadastroUsuarios.Data;
 using CadastroUsuarios.Models;
+using CadastroUsuarios.Repositories;
 using CadastroUsuarios.Service;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -19,6 +20,7 @@ namespace CadastroUsuarios.Controllers
         {
             _service = service;
         }
+        
 
         public ActionResult Index(string filtro = "todos", string termoPesquisa = "")
         {
@@ -49,6 +51,7 @@ namespace CadastroUsuarios.Controllers
                 ViewBag.mensagemErro = "Usuário não cadastrado";
                 return View(usuarioModel);
             }
+            
             _service.AdicionarUsuario(usuarioModel);
 
             //validação de serviço temporaria até implementar exceptions
@@ -62,7 +65,7 @@ namespace CadastroUsuarios.Controllers
             
         }
 
-        public ActionResult Edit(int? id)
+        public ActionResult Editar(int? id)
         {
             if (id == null)
             {
@@ -79,7 +82,7 @@ namespace CadastroUsuarios.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
+        public ActionResult Editar([Bind(Include = "Id,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
         {
             if (!ModelState.IsValid)
             {
@@ -130,10 +133,5 @@ namespace CadastroUsuarios.Controllers
             TempData["mensagemSucesso"] = "Status do usuário atualizado";
             return RedirectToAction("Index");
         }
-
-
-
-
-
     }
 }

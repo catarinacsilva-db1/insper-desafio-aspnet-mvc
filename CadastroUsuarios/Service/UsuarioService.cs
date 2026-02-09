@@ -12,11 +12,11 @@ namespace CadastroUsuarios.Service
         private readonly FiltroQueries _filters;
         public string MensagemValidacao { get; private set; }
 
-        public UsuarioService(IUsuarioRepository repository)
+        public UsuarioService(IUsuarioRepository repository, Validators validator, FiltroQueries filters)
         {
             _repository = repository;
-            _validator = new Validators(_repository);
-            _filters = new FiltroQueries(_repository);
+            _validator = validator;
+            _filters = filters;
         }
         public UsuarioModel AdicionarUsuario(UsuarioModel usuarioModel)
         {
@@ -25,6 +25,7 @@ namespace CadastroUsuarios.Service
             if (!_validator.ValidaCamposUsuario(usuarioModel))
             {
                 MensagemValidacao = _validator.MensagemValidacao;
+                return (usuarioModel);
             }
 
             _repository.Adicionar(usuarioModel);
@@ -37,6 +38,7 @@ namespace CadastroUsuarios.Service
             if (!_validator.ValidaCamposUsuario(usuarioModel))
             {
                 MensagemValidacao = _validator.MensagemValidacao;
+                return (usuarioModel);
             }
 
             _repository.Atualizar(usuarioModel);
