@@ -17,7 +17,7 @@ namespace CadastroUsuarios.Controllers.Utils
 
         public IQueryable<UsuarioModel> PesquisaUsuario(string filtro, string termoPesquisa)
         {
-            IQueryable<UsuarioModel> query = _repository.ListarTodos().AsQueryable();
+            IQueryable<UsuarioModel> query = _repository.ListarTodos();
 
             if (filtro == "ativo")
                 query = query.Where(u => u.Ativo);
