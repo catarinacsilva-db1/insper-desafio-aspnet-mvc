@@ -4,6 +4,7 @@ using CadastroUsuarios.Controllers.Utils;
 using CadastroUsuarios.Data;
 using CadastroUsuarios.Repositories;
 using CadastroUsuarios.Service;
+using CadastroUsuarios.Service.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;

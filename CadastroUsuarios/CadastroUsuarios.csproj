@@ -176,6 +176,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\UsuarioCrudController.cs" />
+    <Compile Include="Filters\Class1.cs" />
     <Compile Include="Repositories\IUsuarioRepository.cs" />
     <Compile Include="Repositories\UsuarioRepository.cs" />
     <Compile Include="Service\UsuarioService.cs" />
@@ -259,6 +260,7 @@
     <Content Include="Views\UsuarioCrud\Editar.cshtml" />
     <Content Include="Views\UsuarioCrud\_ConfirmarDeletar.cshtml" />
     <Content Include="Views\UsuarioCrud\_ConfirmarStatus.cshtml" />
+    <Content Include="Views\UsuarioCrud\RequisitoSenha.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

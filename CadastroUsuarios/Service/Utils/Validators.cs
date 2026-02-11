@@ -31,7 +31,6 @@ namespace CadastroUsuarios.Controllers.Utils
             return true;
         }
 
-        //TODO: boleanos temporarios até criar classes de exceçao
         public bool ValidaCamposUsuario(UsuarioModel usuarioModel)
         {
             MensagemValidacao = null;
@@ -49,8 +48,7 @@ namespace CadastroUsuarios.Controllers.Utils
 
             if (!ValidaSenhaUsuario(usuarioModel.Senha))
             {   
-                //TODO: mensagem de req de senha irao para partial view
-                MensagemValidacao = "Senha inválida. A senha deve ter no mínimo 6 caracteres, incluindo letras maiúsculas, minúsculas e números.";
+                MensagemValidacao = "Senha inválida";
                 return false;
             }
 

@@ -1,6 +1,7 @@
 ﻿using CadastroUsuarios.Controllers.Utils;
 using CadastroUsuarios.Models;
 using CadastroUsuarios.Repositories;
+using CadastroUsuarios.Service.Utils;
 using System.Linq;
 
 namespace CadastroUsuarios.Service

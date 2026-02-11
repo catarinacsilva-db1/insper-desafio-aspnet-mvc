@@ -2,6 +2,7 @@
 using CadastroUsuarios.Data;
 using CadastroUsuarios.Models;
 using CadastroUsuarios.Repositories;
+using CadastroUsuarios.Service.Utils;
 using CadastroUsuarios.Service;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -24,8 +25,11 @@ namespace CadastroUsuarios.Controllers
 
         public ActionResult Index(string filtro = "todos", string termoPesquisa = "")
         {
-            var query = _service.PesquisaUsuario(filtro, termoPesquisa);
+            //força null para ver tela de erro
+            //string texto = null;
+            //int tamanho = texto.Length;
 
+            var query = _service.PesquisaUsuario(filtro, termoPesquisa);
             List<UsuarioModel> usuarios = query.ToList();
 
             ViewBag.FiltroAtual = filtro;
@@ -41,7 +45,6 @@ namespace CadastroUsuarios.Controllers
         }
 
 
-        //TODO: mudar de bind para busca por ID
         [HttpPost, ActionName("Cadastrar")]
         [ValidateAntiForgeryToken]
         public ActionResult CadastrarPost([Bind(Include = "Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
@@ -54,7 +57,6 @@ namespace CadastroUsuarios.Controllers
             
             _service.AdicionarUsuario(usuarioModel);
 
-            //validação de serviço temporaria até implementar exceptions
             if (_service.MensagemValidacao != null)
             {
                 ViewBag.mensagemErro = _service.MensagemValidacao;
