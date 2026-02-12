@@ -176,10 +176,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\UsuarioCrudController.cs" />
-    <Compile Include="Filters\Class1.cs" />
+    <Compile Include="Filters\ExceptionFilter.cs" />
     <Compile Include="Repositories\IUsuarioRepository.cs" />
     <Compile Include="Repositories\UsuarioRepository.cs" />
     <Compile Include="Service\UsuarioService.cs" />
+    <Compile Include="Service\Utils\Exceptions\ValidacaoException.cs" />
     <Compile Include="Service\Utils\FiltroQueries.cs" />
     <Compile Include="Service\Utils\Validators.cs" />
     <Compile Include="Data\AppDbContext.cs" />
@@ -260,7 +261,7 @@
     <Content Include="Views\UsuarioCrud\Editar.cshtml" />
     <Content Include="Views\UsuarioCrud\_ConfirmarDeletar.cshtml" />
     <Content Include="Views\UsuarioCrud\_ConfirmarStatus.cshtml" />
-    <Content Include="Views\UsuarioCrud\RequisitoSenha.cshtml" />
+    <Content Include="Views\UsuarioCrud\_RequisitoSenha.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

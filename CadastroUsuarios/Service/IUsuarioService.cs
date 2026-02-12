@@ -9,8 +9,6 @@ namespace CadastroUsuarios.Service
 {
     public interface IUsuarioService
     {
-        string MensagemValidacao { get; }
-
         UsuarioModel AdicionarUsuario(UsuarioModel usuarioModel);
         UsuarioModel EditarUsuario(UsuarioModel usuarioModel);
         UsuarioModel EditarStatusUsuario(int id);

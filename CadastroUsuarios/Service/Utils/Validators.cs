@@ -1,6 +1,7 @@
 ﻿using CadastroUsuarios.Data;
 using CadastroUsuarios.Models;
 using CadastroUsuarios.Repositories;
+using CadastroUsuarios.Service.Utils.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,51 +14,40 @@ namespace CadastroUsuarios.Controllers.Utils
     {
         private readonly IUsuarioRepository _repository;
 
-        public string MensagemValidacao { get; private set; }
-
         public Validators(IUsuarioRepository repository)
         {
             _repository = repository;
         }
 
-        public bool ValidaBuscaUsuario (UsuarioModel usuarioModel)
+        public void ValidaBuscaUsuario (UsuarioModel usuarioModel)
         {
-            MensagemValidacao = null;
             if (usuarioModel == null)
             {
-                MensagemValidacao = "Usuário não encontrado";
-                return false;
+                throw new ValidacaoException("Usuário não encontrado");
             }
-            return true;
         }
 
-        public bool ValidaCamposUsuario(UsuarioModel usuarioModel)
+        public void ValidaCamposUsuario(UsuarioModel usuarioModel)
         {
-            MensagemValidacao = null;
             if (!ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
             {
-                MensagemValidacao = "Este CPF já está cadastrado";
-                return false;
+                throw new ValidacaoException("Este CPF já está cadastrado");
             }
 
             if (!ValidaIdadeUsuario(usuarioModel.DataNascimento))
             {
-                MensagemValidacao = "Data de Nascimento inválida";
-                return false;
+                throw new ValidacaoException("Data de Nascimento inválida");
             }
 
             if (!ValidaSenhaUsuario(usuarioModel.Senha))
-            {   
-                MensagemValidacao = "Senha inválida";
-                return false;
+            {
+                throw new ValidacaoException("Senha inválida");
             }
-
-            return true;
         }
-
+        
         public bool ValidaCpfUsuario(int id, string cpf)
         {
-            if (id == 0)
+            if (id == 0)//criar metodo de repositorio para cpf
             {
                 return !_repository.ListarTodos().Any(u => u.Cpf == cpf);
             }

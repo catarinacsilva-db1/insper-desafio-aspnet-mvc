@@ -19,6 +19,7 @@
     <hgroup>
         @if (Model != null && !string.IsNullOrEmpty(Model.Exception?.Message))
         {
+            <p>Status: </p>
             <p><strong>Detalhes:</strong> @Model.Exception.Message</p>
         }
     </hgroup>

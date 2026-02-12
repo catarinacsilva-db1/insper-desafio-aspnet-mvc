@@ -1,11 +1,6 @@
-﻿using CadastroUsuarios.Controllers.Utils;
-using CadastroUsuarios.Data;
-using CadastroUsuarios.Models;
-using CadastroUsuarios.Repositories;
-using CadastroUsuarios.Service.Utils;
+﻿using CadastroUsuarios.Models;
 using CadastroUsuarios.Service;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -21,14 +16,9 @@ namespace CadastroUsuarios.Controllers
         {
             _service = service;
         }
-        
 
         public ActionResult Index(string filtro = "todos", string termoPesquisa = "")
         {
-            //força null para ver tela de erro
-            //string texto = null;
-            //int tamanho = texto.Length;
-
             var query = _service.PesquisaUsuario(filtro, termoPesquisa);
             List<UsuarioModel> usuarios = query.ToList();
 
@@ -54,17 +44,17 @@ namespace CadastroUsuarios.Controllers
                 ViewBag.mensagemErro = "Usuário não cadastrado";
                 return View(usuarioModel);
             }
-            
+
             _service.AdicionarUsuario(usuarioModel);
 
             if (_service.MensagemValidacao != null)
             {
                 ViewBag.mensagemErro = _service.MensagemValidacao;
-                return View(usuarioModel); 
+                return View(usuarioModel);
             }
             TempData["mensagemSucesso"] = "Usuário Cadastrado";
             return RedirectToAction("Index");
-            
+
         }
 
         public ActionResult Editar(int? id)
@@ -109,7 +99,7 @@ namespace CadastroUsuarios.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             _service.DeletarUsuario(id);
-            
+
             if (_service.MensagemValidacao != null)
             {
                 ViewBag.mensagemErro = _service.MensagemValidacao;
@@ -125,7 +115,7 @@ namespace CadastroUsuarios.Controllers
         public ActionResult AtualizarStatus(int id)
         {
             _service.EditarStatusUsuario(id);
-            
+
             if (_service.MensagemValidacao != null)
             {
                 ViewBag.mensagemErro = _service.MensagemValidacao;
