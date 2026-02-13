@@ -5,6 +5,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
+using WebGrease.Activities;
 
 namespace CadastroUsuarios.Filters
 {
@@ -37,7 +38,7 @@ namespace CadastroUsuarios.Filters
                     message = "Erro interno do servidor.";
                     break;
             }
-
+            
             Console.WriteLine("Exception occurred: " + filterContext.Exception.Message);
 
             filterContext.Result = new ViewResult

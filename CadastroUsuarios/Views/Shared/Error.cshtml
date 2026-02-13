@@ -1,8 +1,9 @@
 ﻿@{
-    ViewBag.Title = "Erro";
-}
 
-@model System.Web.Mvc.HandleErrorInfo
+    ViewBag.Title = "Erro";
+    int statusCode = (int)(ViewData["StatusCode"] ?? 500);
+    string message = (string)(ViewData["Message"] ?? "Ocorreu um erro ao processar a solicitação.");
+}
 
 @section Subtitulo {
     Ocorreu um erro ao processar a solicitação.
@@ -13,15 +14,11 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Erro</title>
+    <title>Erro @statusCode </title>
 </head>
 <body>
     <hgroup>
-        @if (Model != null && !string.IsNullOrEmpty(Model.Exception?.Message))
-        {
-            <p>Status: </p>
-            <p><strong>Detalhes:</strong> @Model.Exception.Message</p>
-        }
+        <p><strong>Detalhes:</strong> @message</p>
     </hgroup>
 </body>
 </html>
