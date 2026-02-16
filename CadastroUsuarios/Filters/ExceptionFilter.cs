@@ -22,24 +22,30 @@ namespace CadastroUsuarios.Filters
             switch (filterContext.Exception)
             {
                 case UnauthorizedAccessException ex:
-                    statusCode = 401;
+                    statusCode = (int)HttpStatusCode.Unauthorized;
+                        //401;
                     message = "Acesso não autorizado.";
                     break;
                 case ArgumentNullException ex:
-                    statusCode = 400;
+                    statusCode = (int)HttpStatusCode.BadRequest;
+                    //400;
                     message = "Dados inválidos enviados.";
                     break;
                 case InvalidOperationException ex:
-                    statusCode = 403;
+                    statusCode = (int)HttpStatusCode.Forbidden;
+                    //403;
                     message = "Operação não permitida.";
                     break;
                 default:
-                    statusCode = 500;
+                    statusCode = (int)HttpStatusCode.InternalServerError;
+                    //500;
                     message = "Erro interno do servidor.";
                     break;
             }
             
             Console.WriteLine("Exception occurred: " + filterContext.Exception.Message);
+
+            filterContext.HttpContext.Response.StatusCode = statusCode;
 
             filterContext.Result = new ViewResult
             {
