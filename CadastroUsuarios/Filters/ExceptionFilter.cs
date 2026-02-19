@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CadastroUsuarios.Service.Utils.Exceptions;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -21,35 +23,35 @@ namespace CadastroUsuarios.Filters
 
             switch (filterContext.Exception)
             {
+                case ValidacaoException ex:
+                    statusCode = (int)HttpStatusCode.BadRequest;
+                    message = ex.Message;
+                    break;
                 case UnauthorizedAccessException ex:
                     statusCode = (int)HttpStatusCode.Unauthorized;
-                        //401;
                     message = "Acesso não autorizado.";
                     break;
                 case ArgumentNullException ex:
                     statusCode = (int)HttpStatusCode.BadRequest;
-                    //400;
                     message = "Dados inválidos enviados.";
                     break;
                 case InvalidOperationException ex:
                     statusCode = (int)HttpStatusCode.Forbidden;
-                    //403;
                     message = "Operação não permitida.";
                     break;
                 default:
                     statusCode = (int)HttpStatusCode.InternalServerError;
-                    //500;
                     message = "Erro interno do servidor.";
                     break;
             }
-            
-            Console.WriteLine("Exception occurred: " + filterContext.Exception.Message);
+
+            Trace.TraceError("Ocorreu uma exceção: {0}", filterContext.Exception);
 
             filterContext.HttpContext.Response.StatusCode = statusCode;
 
             filterContext.Result = new ViewResult
             {
-                ViewName = "Error",//TODO: alterar a view de erro para receber o status code e a mensagem
+                ViewName = "Error",
                 ViewData = new ViewDataDictionary
                 {
                     { "StatusCode", statusCode },

@@ -1,6 +1,9 @@
-﻿using CadastroUsuarios.Models;
+﻿using CadastroUsuarios.Controllers.Utils;
+using CadastroUsuarios.Models;
 using CadastroUsuarios.Service;
 using CadastroUsuarios.Service.Utils.Exceptions;
+using CadastroUsuarios.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -21,11 +24,10 @@ namespace CadastroUsuarios.Controllers
         public ActionResult Index(string filtro = "todos", string termoPesquisa = "")
         {
             var query = _service.PesquisaUsuario(filtro, termoPesquisa);
-            List<UsuarioModel> usuarios = query.ToList();
+            List<UsuarioViewModel> usuarios = query.ToList().Select(UsuarioMapper.ToViewModel).ToList();
 
             ViewBag.FiltroAtual = filtro;
             ViewBag.TermoPesquisa = termoPesquisa;
-
             return View(usuarios);
         }
 
@@ -38,13 +40,15 @@ namespace CadastroUsuarios.Controllers
 
         [HttpPost, ActionName("Cadastrar")]
         [ValidateAntiForgeryToken]
-        public ActionResult Cadastrar([Bind(Include = "Ativo,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
+        public ActionResult Cadastrar(UsuarioViewModel usuarioViewModel)
         {
             if (!ModelState.IsValid)
             {
                 ViewBag.mensagemErro = "Usuário não cadastrado";
-                return View(usuarioModel);
+                return View(usuarioViewModel);
             }
+
+            UsuarioModel usuarioModel = UsuarioMapper.ToModel(usuarioViewModel);
 
             try
             {
@@ -53,7 +57,7 @@ namespace CadastroUsuarios.Controllers
             catch (ValidacaoException ex)
             {
                 ViewBag.mensagemErro = ex.Message;
-                return View(usuarioModel);
+                return View(usuarioViewModel);
             }
 
             TempData["mensagemSucesso"] = "Usuário Cadastrado";
@@ -67,34 +71,39 @@ namespace CadastroUsuarios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            
             UsuarioModel usuarioModel = _service.BuscarPorId(id.Value);
+            
             if (usuarioModel == null)
             {
                 return HttpNotFound();
             }
-            return View(usuarioModel);
+
+            UsuarioViewModel usuarioViewModel = UsuarioMapper.ToViewModel(usuarioModel);
+            return View(usuarioViewModel);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Editar([Bind(Include = "Id,Nome,Sobrenome,NomeSocial,DataNascimento,Cpf,Senha")] UsuarioModel usuarioModel)
+        public ActionResult Editar(UsuarioViewModel usuarioViewModel)
         {
             if (!ModelState.IsValid)
             {
                 ViewBag.mensagemErro = "Usuário não cadastrado";
-                return View(usuarioModel);
+                return View(usuarioViewModel);
             }
 
             try
             {
+                UsuarioModel usuarioModel = UsuarioMapper.ToModel(usuarioViewModel);
                 _service.EditarUsuario(usuarioModel);
 
             }
             catch (ValidacaoException ex)
             {
                 ViewBag.mensagemErro = ex.Message;
-                return View(usuarioModel);
+                return View(usuarioViewModel);
             }
 
             TempData["mensagemSucesso"] = "Usuário Atualizado";
