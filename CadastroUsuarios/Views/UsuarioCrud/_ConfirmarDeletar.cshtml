@@ -1,4 +1,4 @@
-﻿@model CadastroUsuarios.Models.UsuarioModel
+﻿@model CadastroUsuarios.ViewModel.UsuarioViewModel
 
 <div class="modal fade" id="confirmaDeletar@(Model.Id)" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -16,7 +16,7 @@
                 {
                     @Html.AntiForgeryToken()
                     @Html.Hidden("id", @Model.Id)
-                    <input type="submit" value="Excluir" class="btn btn-danger" />                   
+                    <input type="submit" value="Excluir" class="btn btn-danger" />
                 }
             </div>
         </div>

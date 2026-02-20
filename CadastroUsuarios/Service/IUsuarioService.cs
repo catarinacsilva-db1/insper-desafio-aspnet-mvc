@@ -1,16 +1,10 @@
 ﻿using CadastroUsuarios.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CadastroUsuarios.Service
 {
     public interface IUsuarioService
     {
-        string MensagemValidacao { get; }
-
         UsuarioModel AdicionarUsuario(UsuarioModel usuarioModel);
         UsuarioModel EditarUsuario(UsuarioModel usuarioModel);
         UsuarioModel EditarStatusUsuario(int id);

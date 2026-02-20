@@ -1,14 +1,24 @@
-﻿<!DOCTYPE html>
+﻿@{
+
+    ViewBag.Title = "Erro";
+    int statusCode = (int)(ViewData["StatusCode"] ?? 500);
+    string message = (string)(ViewData["Message"] ?? "Ocorreu um erro ao processar a solicitação.");
+}
+
+@section Subtitulo {
+    Ocorreu um erro ao processar a solicitação.
+}
+
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Erro</title>
+    <title>Erro @statusCode </title>
 </head>
 <body>
     <hgroup>
-        <h1>Erro.</h1>
-        <h2>Ocorreu um erro ao processar a solicitação.</h2>
+        <p><strong>Detalhes:</strong> @message</p>
     </hgroup>
 </body>
 </html>
