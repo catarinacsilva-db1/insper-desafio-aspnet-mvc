@@ -1,6 +1,5 @@
 using CadastroUsuarios.Models;
 using CadastroUsuarios.ViewModel;
-using System.Data.Common;
 
 namespace CadastroUsuarios.Controllers.Utils
 {

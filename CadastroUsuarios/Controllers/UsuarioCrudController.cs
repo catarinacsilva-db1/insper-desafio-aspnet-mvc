@@ -3,7 +3,6 @@ using CadastroUsuarios.Models;
 using CadastroUsuarios.Service;
 using CadastroUsuarios.Service.Utils.Exceptions;
 using CadastroUsuarios.ViewModel;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -24,7 +23,7 @@ namespace CadastroUsuarios.Controllers
         public ActionResult Index(string filtro = "todos", string termoPesquisa = "")
         {
             var query = _service.PesquisaUsuario(filtro, termoPesquisa);
-            List<UsuarioViewModel> usuarios = query.ToList().Select(UsuarioMapper.ToViewModel).ToList();
+            List<UsuarioViewModel> usuarios = query.Select(UsuarioMapper.ToViewModel).ToList();
 
             ViewBag.FiltroAtual = filtro;
             ViewBag.TermoPesquisa = termoPesquisa;
@@ -71,9 +70,9 @@ namespace CadastroUsuarios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
+
             UsuarioModel usuarioModel = _service.BuscarPorId(id.Value);
-            
+
             if (usuarioModel == null)
             {
                 return HttpNotFound();
@@ -90,7 +89,7 @@ namespace CadastroUsuarios.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.mensagemErro = "Usuário não cadastrado";
+                ViewBag.mensagemErro = "Usuário não atualizado";
                 return View(usuarioViewModel);
             }
 

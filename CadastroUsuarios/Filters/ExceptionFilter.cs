@@ -1,23 +1,20 @@
 ﻿using CadastroUsuarios.Service.Utils.Exceptions;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Services.Description;
-using WebGrease.Activities;
 
 namespace CadastroUsuarios.Filters
 {
     public class ExceptionFilter : HandleErrorAttribute
     {
-        int statusCode;
-        string message;
+
 
         public override void OnException(ExceptionContext filterContext)
         {
+            int statusCode;
+            string message;
+
             if (filterContext.ExceptionHandled)
                 return;
 
@@ -45,7 +42,7 @@ namespace CadastroUsuarios.Filters
                     break;
             }
 
-            Trace.TraceError("Ocorreu uma exceção: {0}", filterContext.Exception);
+            Trace.TraceError("Ocorreu uma exceção: {0}", filterContext.Exception.ToString());
 
             filterContext.HttpContext.Response.StatusCode = statusCode;
 

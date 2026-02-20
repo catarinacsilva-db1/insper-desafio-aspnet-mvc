@@ -1,12 +1,8 @@
-﻿using CadastroUsuarios.Data;
-using CadastroUsuarios.Models;
+﻿using CadastroUsuarios.Models;
 using CadastroUsuarios.Repositories;
 using CadastroUsuarios.Service.Utils.Exceptions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 namespace CadastroUsuarios.Controllers.Utils
 {
@@ -19,7 +15,7 @@ namespace CadastroUsuarios.Controllers.Utils
             _repository = repository;
         }
 
-        public void ValidaBuscaUsuario (UsuarioModel usuarioModel)
+        public void ValidaBuscaUsuario(UsuarioModel usuarioModel)
         {
             if (usuarioModel == null)
             {
@@ -44,7 +40,7 @@ namespace CadastroUsuarios.Controllers.Utils
                 throw new ValidacaoException("Senha inválida");
             }
         }
-        
+
         public bool ValidaCpfUsuario(int id, string cpf)
         {
             if (id == 0)//criar metodo de repositorio para cpf
@@ -66,9 +62,9 @@ namespace CadastroUsuarios.Controllers.Utils
 
         public static bool ValidaSenhaUsuario(string senha)
         {
-            if (string.IsNullOrWhiteSpace(senha) || 
-                senha.Length < 6 || 
-                !senha.Any(char.IsDigit) || 
+            if (string.IsNullOrWhiteSpace(senha) ||
+                senha.Length < 6 ||
+                !senha.Any(char.IsDigit) ||
                 !senha.Any(char.IsUpper) ||
                 !senha.Any(char.IsLower))
             {

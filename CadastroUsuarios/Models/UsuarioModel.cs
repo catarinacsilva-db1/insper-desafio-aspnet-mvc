@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace CadastroUsuarios.Models
 {
-    public class UsuarioModel {
+    public class UsuarioModel
+    {
 
         public int Id { get; set; }
         public bool Ativo { get; set; }
