@@ -30,7 +30,6 @@ namespace CadastroUsuarios.Controllers
             return View(usuarios);
         }
 
-        // apenas retorna view
         public ActionResult Cadastrar()
         {
             return View();

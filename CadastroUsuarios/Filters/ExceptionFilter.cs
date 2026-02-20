@@ -9,7 +9,6 @@ namespace CadastroUsuarios.Filters
     public class ExceptionFilter : HandleErrorAttribute
     {
 
-
         public override void OnException(ExceptionContext filterContext)
         {
             int statusCode;

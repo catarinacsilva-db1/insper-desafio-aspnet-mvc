@@ -29,7 +29,8 @@ namespace CadastroUsuarios.Service.Utils
                 query = query.Where(u =>
                     u.Nome.ToLower().Contains(termoPesquisa) ||
                     u.Sobrenome.ToLower().Contains(termoPesquisa) ||
-                    u.NomeSocial.ToLower().Contains(termoPesquisa)
+                    u.NomeSocial.ToLower().Contains(termoPesquisa) ||
+                    u.Cpf.Contains(termoPesquisa)
                 );
             }
 
