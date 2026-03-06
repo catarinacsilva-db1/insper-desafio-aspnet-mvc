@@ -7,7 +7,7 @@ using System.Web.Http.Filters;
 
 namespace CadastroUsuarios.Filters
 {
-    public class ApiExceptionFilter : ExceptionFilterAttribute
+    public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
 
         public override void OnException(HttpActionExecutedContext filterContext)
@@ -15,7 +15,7 @@ namespace CadastroUsuarios.Filters
             int statusCode;
             string message;
 
-            if (filterContext == null)
+            if (filterContext.Exception == null)
                 return;
 
             switch (filterContext.Exception)

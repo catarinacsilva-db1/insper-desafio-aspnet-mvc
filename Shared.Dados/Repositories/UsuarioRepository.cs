@@ -1,7 +1,9 @@
 ﻿using CadastroUsuarios.Data;
 using CadastroUsuarios.Models;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CadastroUsuarios.Repositories
 {
@@ -14,16 +16,16 @@ namespace CadastroUsuarios.Repositories
             _db = db;
         }
 
-        public UsuarioModel Adicionar(UsuarioModel usuario)
+        public async Task<UsuarioModel> AdicionarAsync(UsuarioModel usuario)
         {
             _db.Usuarios.Add(usuario);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return usuario;
         }
 
-        public UsuarioModel Atualizar(UsuarioModel usuario)
+        public async Task<UsuarioModel> AtualizarAsync(UsuarioModel usuario)
         {
-            var usuarioExistente = BuscarPorId(usuario.Id);
+            var usuarioExistente = await BuscarPorIdAsync(usuario.Id);
             if (usuarioExistente != null)
             {
                 usuarioExistente.Nome = usuario.Nome;
@@ -33,32 +35,41 @@ namespace CadastroUsuarios.Repositories
                 usuarioExistente.Cpf = usuario.Cpf;
                 usuarioExistente.Senha = usuario.Senha;
 
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 return usuarioExistente;
             }
             return usuario;
         }
 
-        public UsuarioModel AtualizaStatus(UsuarioModel usuario)
+        public async Task<UsuarioModel> AtualizaStatusAsync(UsuarioModel usuario)
         {
             usuario.Ativo = !usuario.Ativo;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return usuario;
         }
 
-        public IQueryable<UsuarioModel> ListarTodos()
+        public async Task<List<UsuarioModel>> ListarTodosAsync()
         {
-            return _db.Usuarios;
+            return await _db.Usuarios.AsNoTracking().ToListAsync();
         }
-
-        public void Remover(UsuarioModel usuario)
+    
+        public async Task RemoverAsync(UsuarioModel usuario)
         {
             _db.Usuarios.Remove(usuario);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
-        public UsuarioModel BuscarPorId(int id)
+        public async Task<UsuarioModel> BuscarPorIdAsync(int id)
         {
-            return _db.Usuarios.Find(id);
+            return await _db.Usuarios.FindAsync(id);
+        }
+
+        public async Task<bool> ExisteCpfAsync(string cpf, int id = 0)
+        {
+            if (id == 0)
+            {
+                return await _db.Usuarios.AnyAsync(u => u.Cpf == cpf);
+            }
+            return await _db.Usuarios.AnyAsync(u => u.Cpf == cpf && u.Id != id);
         }
 
         public void Dispose()

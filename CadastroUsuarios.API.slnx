@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CadastroUsuarios.Shared.Dominio/CadastroUsuarios.Shared.Service.csproj" Id="5939c71f-ad1e-4d0c-826c-34af5ef7f599" />
+  <Project Path="CadastroUsuarios.Shared.Model/CadastroUsuarios.Shared.Model.csproj" Id="ceb04d25-6be2-4d9e-a462-0c8ce56853d3" />
+  <Project Path="CadastroUsuarios/CadastroUsuarios.API.csproj" Id="86ba079b-3b43-4731-aaee-a9c0bf146aa4" />
+  <Project Path="Shared.Dados/CadastroUsuarios.Shared.Data.csproj" Id="873d1a4c-5c32-4102-998f-d9ba6555f021" />
+</Solution>
