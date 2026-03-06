@@ -1,7 +1,6 @@
 ﻿using CadastroUsuarios.Models;
 using CadastroUsuarios.Repositories;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CadastroUsuarios.Service.Utils
 {
@@ -13,9 +12,9 @@ namespace CadastroUsuarios.Service.Utils
             _repository = repository;
         }
 
-        public async Task<IQueryable<UsuarioModel>> PesquisaUsuarioAsync(string filtro, string termoPesquisa)
+        public IQueryable<UsuarioModel> PesquisaUsuario(string filtro, string termoPesquisa)
         {
-            IQueryable<UsuarioModel> query = (IQueryable<UsuarioModel>)await _repository.ListarTodosAsync();
+            IQueryable<UsuarioModel> query = _repository.ListarTodos();
 
             if (filtro == "ativo")
                 query = query.Where(u => u.Ativo);

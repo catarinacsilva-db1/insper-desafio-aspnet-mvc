@@ -6,7 +6,6 @@ using CadastroUsuarios.ViewModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 
@@ -21,10 +20,10 @@ namespace CadastroUsuarios.Controllers
             _service = service;
         }
 
-        public async Task<ActionResult> Index(string filtro = "todos", string termoPesquisa = "")
+        public ActionResult Index(string filtro = "todos", string termoPesquisa = "")
         {
-            var query = await _service.PesquisaUsuarioAsync(filtro, termoPesquisa);
-            List<UsuarioViewModel> usuarios = query.Select(u => UsuarioMapper.ToViewModel(u)).ToList();
+            var query = _service.PesquisaUsuario(filtro, termoPesquisa);
+            List<UsuarioViewModel> usuarios = query.Select(UsuarioMapper.ToViewModel).ToList();
 
             ViewBag.FiltroAtual = filtro;
             ViewBag.TermoPesquisa = termoPesquisa;
@@ -39,7 +38,7 @@ namespace CadastroUsuarios.Controllers
 
         [HttpPost, ActionName("Cadastrar")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Cadastrar(UsuarioViewModel usuarioViewModel)
+        public ActionResult Cadastrar(UsuarioViewModel usuarioViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -51,7 +50,7 @@ namespace CadastroUsuarios.Controllers
 
             try
             {
-                await _service.AdicionarUsuarioAsync(usuarioModel);
+                _service.AdicionarUsuario(usuarioModel);
             }
             catch (ValidacaoException ex)
             {
@@ -64,14 +63,14 @@ namespace CadastroUsuarios.Controllers
 
         }
 
-        public async Task<ActionResult> Editar(int? id)
+        public ActionResult Editar(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            UsuarioModel usuarioModel = await _service.BuscarPorIdAsync(id.Value);
+            UsuarioModel usuarioModel = _service.BuscarPorId(id.Value);
 
             if (usuarioModel == null)
             {
@@ -85,7 +84,7 @@ namespace CadastroUsuarios.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Editar(UsuarioViewModel usuarioViewModel)
+        public ActionResult Editar(UsuarioViewModel usuarioViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -96,7 +95,7 @@ namespace CadastroUsuarios.Controllers
             try
             {
                 UsuarioModel usuarioModel = UsuarioMapper.ToModel(usuarioViewModel);
-                await _service.EditarUsuarioAsync(usuarioModel);
+                _service.EditarUsuario(usuarioModel);
 
             }
             catch (ValidacaoException ex)
@@ -111,11 +110,11 @@ namespace CadastroUsuarios.Controllers
 
         [HttpPost, ActionName("Deletar")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
             try
             {
-                await _service.DeletarUsuarioAsync(id);
+                _service.DeletarUsuario(id);
 
             }
             catch (ValidacaoException ex)
@@ -129,11 +128,11 @@ namespace CadastroUsuarios.Controllers
 
         [HttpPost, ActionName("AtualizarStatus")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AtualizarStatus(int id)
+        public ActionResult AtualizarStatus(int id)
         {
             try
             {
-                await _service.EditarStatusUsuarioAsync(id);
+                _service.EditarStatusUsuario(id);
 
             }
             catch (ValidacaoException ex)

@@ -3,7 +3,6 @@ using CadastroUsuarios.Repositories;
 using CadastroUsuarios.Service.Utils.Exceptions;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CadastroUsuarios.Controllers.Utils
 {
@@ -24,9 +23,9 @@ namespace CadastroUsuarios.Controllers.Utils
             }
         }
 
-        public async Task ValidaCamposUsuario(UsuarioModel usuarioModel)
+        public void ValidaCamposUsuario(UsuarioModel usuarioModel)
         {
-            if (!await ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
+            if (!ValidaCpfUsuario(usuarioModel.Id, usuarioModel.Cpf))
             {
                 throw new ValidacaoException("Este CPF já está cadastrado");
             }
@@ -42,10 +41,13 @@ namespace CadastroUsuarios.Controllers.Utils
             }
         }
 
-        public async Task<bool> ValidaCpfUsuario(int id, string cpf)
+        public bool ValidaCpfUsuario(int id, string cpf)
         {
-            bool cpfExiste = await _repository.ExisteCpfAsync(cpf, id);
-            return !cpfExiste;
+            if (id == 0)//criar metodo de repositorio para cpf
+            {
+                return !_repository.ListarTodos().Any(u => u.Cpf == cpf);
+            }
+            return !_repository.ListarTodos().Any(u => u.Cpf == cpf && u.Id != id);
         }
 
         public static bool ValidaIdadeUsuario(DateTime dataNascimento)

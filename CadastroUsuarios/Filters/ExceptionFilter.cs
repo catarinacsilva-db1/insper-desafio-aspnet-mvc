@@ -2,20 +2,19 @@
 using System;
 using System.Diagnostics;
 using System.Net;
-using System.Net.Http;
-using System.Web.Http.Filters;
+using System.Web.Mvc;
 
 namespace CadastroUsuarios.Filters
 {
-    public class ApiExceptionFilter : ExceptionFilterAttribute
+    public class ExceptionFilter : HandleErrorAttribute
     {
 
-        public override void OnException(HttpActionExecutedContext filterContext)
+        public override void OnException(ExceptionContext filterContext)
         {
             int statusCode;
             string message;
 
-            if (filterContext == null)
+            if (filterContext.ExceptionHandled)
                 return;
 
             switch (filterContext.Exception)
@@ -44,8 +43,20 @@ namespace CadastroUsuarios.Filters
 
             Trace.TraceError("Ocorreu uma exceção: {0}", filterContext.Exception.ToString());
 
-            filterContext.Response = filterContext.Request.CreateErrorResponse((HttpStatusCode)statusCode, message);
+            filterContext.HttpContext.Response.StatusCode = statusCode;
 
+            filterContext.Result = new ViewResult
+            {
+                ViewName = "Error",
+                ViewData = new ViewDataDictionary
+                {
+                    { "StatusCode", statusCode },
+                    { "Message", message }
+                }
+            };
+
+
+            filterContext.ExceptionHandled = true;
         }
     }
 }

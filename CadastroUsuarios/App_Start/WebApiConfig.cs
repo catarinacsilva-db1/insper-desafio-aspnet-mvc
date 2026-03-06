@@ -1,6 +1,4 @@
-﻿using CadastroUsuarios.Filters;
-using System.Web.Http.Cors;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -11,10 +9,9 @@ namespace CadastroUsuarios
     {
         public static void Register(HttpConfiguration config)
         {
-            config.Filters.Add(new ApiExceptionFilter());
-            var cors = new EnableCorsAttribute("*", "*", "*");
-            config.EnableCors(cors);
+            // Configuração e serviços de API Web
 
+            // Rotas de API Web
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(

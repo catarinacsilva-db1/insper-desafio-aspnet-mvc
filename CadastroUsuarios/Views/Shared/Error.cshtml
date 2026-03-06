@@ -1,0 +1,16 @@
+﻿@{
+
+    ViewBag.Title = "Erro";
+    int statusCode = (int)(ViewData["StatusCode"] ?? 500);
+    string message = (string)(ViewData["Message"] ?? "Ocorreu um erro ao processar a solicitação.");
+}
+
+@section Subtitulo {
+    Erro @statusCode
+}
+<body>
+    <hgroup>
+        <p><strong>Detalhes:</strong> @message</p>
+    </hgroup>
+</body>
+
